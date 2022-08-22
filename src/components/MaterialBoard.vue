@@ -1,0 +1,34 @@
+<template>
+  <div class="w-full h-full">
+    <MaterialList @click:item="openModal" :materials="materialStore.materials">
+      <template v-slot:title>
+        <h1 class="text-lg text-center font-bold">材料</h1>
+        <h3 class="text-md text-center">点击卡片添加到餐盘</h3>
+      </template>
+    </MaterialList>
+
+    <!-- Modal -->
+    <AddMealModal v-model:isOpen="isOpen" :materialId="materialId" />
+  </div>
+</template>
+
+<script setup>
+import MaterialList from "./MaterialList.vue";
+import { ref } from "vue";
+import { useMaterialStore } from "../stores/material";
+
+const materialStore = useMaterialStore();
+
+/**
+ * Modal
+ */
+const isOpen = ref(false);
+const materialId = ref(1);
+
+function openModal(id) {
+  materialId.value = id;
+  isOpen.value = true;
+}
+</script>
+
+<style lang="scss" scoped></style>

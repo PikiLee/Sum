@@ -1,0 +1,29 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import { RouterView } from "vue-router";
+// import AppLoaderVue from "./components/AppLoader.vue";
+import AppNavVue from "./components/AppNav.vue";
+
+const navBar = ref(null);
+const wrapper = ref(null);
+onMounted(() => {
+  wrapper.value.style.setProperty("--pb", `${navBar.value.height * 2}px`);
+});
+</script>
+
+<template>
+  <div class="container px-4 wrapper mx-auto" ref="wrapper">
+    <AppNavVue ref="navBar" />
+    <AppNotis />
+    <RouterView />
+  </div>
+  <ProgressBar />
+  <!-- <AppLoaderVue /> -->
+</template>
+
+<style scoped>
+.wrapper {
+  --pb: 10rem;
+  padding-bottom: var(--pb);
+}
+</style>
