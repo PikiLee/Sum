@@ -16,17 +16,19 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const container = ref(null);
+const container = ref<HTMLDivElement | null>(null);
 
-const height = ref(null);
+const height = ref<number>(0);
 onMounted(() => {
-  height.value = container.value.offsetHeight;
+  if (container.value) {
+    height.value = container.value.offsetHeight;
+  }
 });
 
 defineExpose({

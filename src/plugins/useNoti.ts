@@ -1,34 +1,39 @@
 import { ref } from "vue";
 
-export const notis = ref([]);
+interface Noti {
+  type: "info" | "success" | "error";
+  message: string;
+}
 
-function removeNoti(noti) {
+export const notis = ref<Noti[]>([]);
+
+function removeNoti(noti: Noti) {
   notis.value.splice(notis.value.indexOf(noti), 1);
 }
 
 export const notier = {
   duration: 2000,
-  setDuration: function (duration) {
+  setDuration: function (duration: number) {
     this.duration = duration;
   },
-  info: function (message) {
-    const noti = {
+  info: function (message: string) {
+    const noti: Noti = {
       type: "info",
       message,
     };
     notis.value.push(noti);
     setTimeout(() => removeNoti(noti), this.duration);
   },
-  error: function (message) {
-    const noti = {
+  error: function (message: string) {
+    const noti: Noti = {
       type: "error",
       message,
     };
     notis.value.push(noti);
     setTimeout(() => removeNoti(noti), this.duration);
   },
-  success: function (message) {
-    const noti = {
+  success: function (message: string) {
+    const noti: Noti = {
       type: "success",
       message,
     };

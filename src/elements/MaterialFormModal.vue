@@ -20,10 +20,11 @@
   </AppModal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppModal from "../components/AppModal.vue";
 import BaseButton from "./BaseButton.vue";
 import { ref, reactive, watch, computed } from "vue";
+import type { FormInstance } from "ant-design-vue";
 
 const props = defineProps({
   isOpen: {
@@ -75,9 +76,14 @@ function handleDelete() {
 /**
  * From
  */
-const formRef = ref(null);
+const formRef = ref<FormInstance>();
 
-const formState = reactive({
+interface FormState {
+  name: string;
+  caloriesPerHundredGram: number;
+}
+
+const formState: FormState = reactive({
   name: props.isEditing ? props.material?.name : "",
   caloriesPerHundredGram: props.isEditing
     ? props.material?.caloriesPerHundredGram
@@ -113,7 +119,7 @@ const rules = {
 };
 
 function handleOk() {
-  formRef.value.validateFields().then((values) => {
+  formRef.value?.validateFields().then((values: FormState) => {
     emit("ok", values);
   });
 }

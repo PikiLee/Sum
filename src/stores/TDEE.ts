@@ -3,13 +3,11 @@ import { defineStore } from "pinia";
 export const useTDEEStore = defineStore({
   id: "TDEE",
   state: () => ({
-    TDEE: null,
+    TDEE: 2500,
   }),
-  getters: {
-    doubleCount: (state) => state.counter * 2,
-  },
+  getters: {},
   actions: {
-    setTDEE(value) {
+    setTDEE(value: number) {
       this.TDEE = value;
     },
   },

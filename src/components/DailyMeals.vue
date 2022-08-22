@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppCard from "../elements/AppCard.vue";
 import { ref } from "vue";
 import { useMealStore } from "../stores/meal";
@@ -58,6 +58,7 @@ import AppProgress from "../elements/AppProgress.vue";
 import { useTDEEStore } from "../stores/TDEE";
 import BaseButton from "../elements/BaseButton.vue";
 import CaloriesStatsCard from "./CaloriesStatsCard.vue";
+import type { Meal } from "@/db/mealTypes";
 
 const notier = useNoti();
 const mealStore = useMealStore();
@@ -72,19 +73,19 @@ const isOpen = ref(false);
 const amount = ref(0);
 const isLoading = ref(false);
 const error = ref("");
-const meal = ref(null);
+const meal = ref<Meal>({} as Meal);
 
 function handleCancel() {
   isOpen.value = false;
 }
 
-function openModal(mealId) {
+function openModal(mealId: number) {
   meal.value = mealStore.getById(mealId);
   amount.value = meal.value.amount;
   isOpen.value = true;
 }
 
-function handleToggle(index) {
+function handleToggle(index: number) {
   mealStore.setCurrentMeal(mealStore.meals[index]);
 }
 

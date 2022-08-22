@@ -12,4 +12,4 @@ export const progressBar = {
   },
 };
 
-export const useProgressBar = () => progressBar
+export const useProgressBar = () => progressBar;

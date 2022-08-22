@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import RecentMeals from "../components/RecentMeals.vue";
 </script>
 

@@ -19,20 +19,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { gsap } from "gsap";
 import { onMounted, ref } from "vue";
 
-const props = defineProps({
-  tabTitles: {
-    type: Array,
-    required: true,
-  },
-  activeIndex: {
-    type: Number,
-    required: true,
-  },
-});
+interface Props {
+  tabTitles: string[];
+  activeIndex: number;
+}
+
+const props = defineProps<Props>();
 
 const emit = defineEmits(["update:activeIndex"]);
 
@@ -40,17 +36,17 @@ const emit = defineEmits(["update:activeIndex"]);
  * Toggle Active Tab
  */
 const active = ref(null);
-const group = ref(null);
+const group = ref<HTMLDivElement | null>(null);
 
-function toggleActive(index) {
+function toggleActive(index: number) {
   animateActive(index);
   emit("update:activeIndex", index);
 }
 
 // animation
-function animateActive(index) {
+function animateActive(index: number) {
   gsap.to(active.value, {
-    x: () => group.value.offsetWidth * 0.25 * index,
+    x: () => (group.value?.offsetWidth ?? 0) * 0.25 * index,
     duration: 1,
   });
 }

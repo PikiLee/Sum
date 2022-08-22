@@ -1,13 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { RouterView } from "vue-router";
 // import AppLoaderVue from "./components/AppLoader.vue";
 import AppNavVue from "./components/AppNav.vue";
 
-const navBar = ref(null);
-const wrapper = ref(null);
+const navBar = ref<InstanceType<typeof AppNavVue> | null>(null);
+const wrapper = ref<HTMLDivElement | null>(null);
 onMounted(() => {
-  wrapper.value.style.setProperty("--pb", `${navBar.value.height * 2}px`);
+  if (wrapper.value && navBar.value) {
+    wrapper.value.style.setProperty("--pb", `${navBar.value.height * 2}px`);
+  }
 });
 </script>
 

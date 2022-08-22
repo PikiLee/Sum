@@ -22,7 +22,7 @@
   </SmallCard>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SmallCard from "../elements/SmallCard.vue";
 import AppAvatar from "../elements/AppAvatar.vue";
 const props = defineProps({

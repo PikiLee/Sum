@@ -76,7 +76,7 @@
   </AppCard2>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, ref, toRaw } from "vue";
 import BaseButton from "../elements/BaseButton.vue";
 import AppCard2 from "../elements/AppCard2.vue";
@@ -85,6 +85,7 @@ import { useNoti } from "../plugins/useNoti";
 
 import { useRouter } from "vue-router";
 import { gsap } from "gsap";
+import type { TDEEFormState, Gender } from "@/db/TDEEType";
 
 const router = useRouter();
 const notier = useNoti();
@@ -94,22 +95,27 @@ const TDEEStore = useTDEEStore();
 const inputDirectly = ref(false);
 
 // form 1
-const TDEEInfo = JSON.parse(localStorage.getItem("TDEEInfo"));
-const formDefault = {
-  gender: "男",
+let TDEEInfo: TDEEFormState;
+const item = localStorage.getItem("TDEEInfo");
+if (item) {
+  TDEEInfo = JSON.parse(item);
+}
+
+const formDefault: TDEEFormState = {
+  gender: 0,
   age: 20,
   height: 178,
   weight: 80,
-  exerciseLevel: "几乎或完全没有运动",
+  exerciseLevel: 0,
 };
-const formState = reactive(TDEEInfo ?? formDefault);
+const formState: TDEEFormState = reactive(TDEEInfo || formDefault);
 
 const exerciseLevels = {
-  几乎或完全没有运动: 1.2,
-  每周运动1至3次: 1.375,
-  每周运动3至5次: 1.55,
-  每天运动6至7次: 1.725,
-  每天运动及重体力工作: 1.9,
+  0: 1.2,
+  1: 1.375,
+  2: 1.55,
+  3: 1.725,
+  4: 1.9,
 };
 
 const radioStyle = reactive({
@@ -176,26 +182,30 @@ const isLoading = ref(false);
 function handleSubmit() {
   try {
     isLoading.value = true;
-    let TDEE;
+    let TDEE: number;
 
     if (inputDirectly.value) {
       TDEE = calories.value;
-    } else if (formState.gender === "男") {
+    } else if (formState.gender === 0) {
       TDEE =
         66 +
         13.7 * formState.weight +
         5 * formState.height -
         6.8 * formState.age;
-      TDEE = (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0);
+      TDEE = Number(
+        (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0)
+      );
     } else {
       (TDEE = 655 + 9.6 * formState.weight + 1.8 * formState.height - 4),
         7 * formState.age;
-      TDEE = (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0);
+      TDEE = Number(
+        (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0)
+      );
     }
 
     TDEEStore.setTDEE(TDEE);
     localStorage.setItem("TDEEInfo", JSON.stringify(toRaw(formState)));
-    localStorage.setItem("TDEE", TDEE);
+    localStorage.setItem("TDEE", String(TDEE));
     notier.success("设置成功");
     setTimeout(() => router.push({ name: "home" }), 500);
 
@@ -209,7 +219,7 @@ function handleSubmit() {
  * Animaton
  */
 
-const card = ref(null);
+const card = ref<InstanceType<typeof AppCard2> | null>(null);
 
 function onLeave(_, done) {
   const tl = gsap.timeline();

@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TDEECalculator from "../components/TDEECalculator.vue";
 </script>
 

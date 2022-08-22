@@ -38,7 +38,7 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import BaseButton from "../elements/BaseButton.vue";
 import { gsap } from "gsap";
 
@@ -64,7 +64,7 @@ defineEmits(["cancel", "ok"]);
 /**
  * Animations
  */
-function animateModalEnter(el, done) {
+function animateModalEnter(el: HTMLDivElement, done) {
   gsap.from(el, {
     scale: 0,
     opacity: 0,
@@ -74,7 +74,7 @@ function animateModalEnter(el, done) {
   });
 }
 
-function animateModalLeave(el, done) {
+function animateModalLeave(el: HTMLDivElement, done) {
   gsap.to(el, {
     scale: 0,
     opacity: 0,

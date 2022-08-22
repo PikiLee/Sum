@@ -1,9 +1,9 @@
-<script>
-import { h } from "vue";
+<script lang="ts">
+import { h, defineComponent } from "vue";
 import BaseTab from "../elements/BaseTab.vue";
 import { gsap } from "gsap";
 import { computed, Transition } from "vue";
-export default {
+export default defineComponent({
   props: {
     tabTitles: {
       type: Array,
@@ -17,9 +17,20 @@ export default {
   emits: ["toggle"],
   setup(props, { emit, slots }) {
     // get the active tab
-    const tabs = computed(() => slots.default()[0]);
+    const tabs = computed(() => {
+      // slots.default?
+      if (slots.default) {
+        return slots.default();
+      }
+      return null;
+    });
+
     const activeTab = computed(() => {
-      return tabs.value.children[props.activeIndex];
+      if (tabs.value) {
+        return tabs.value.children[props.activeIndex];
+      }
+
+      return null;
     });
 
     /**
@@ -58,7 +69,7 @@ export default {
         h(BaseTab, {
           tabTitles: props.tabTitles,
           activeIndex: props.activeIndex,
-          "onUpdate:activeIndex": (index) => emit("toggle", index),
+          "onUpdate:activeIndex": (index: number) => emit("toggle", index),
         }),
         h("div", { class: ["mt-2"] }, [
           h(
@@ -69,7 +80,7 @@ export default {
         ]),
       ]);
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

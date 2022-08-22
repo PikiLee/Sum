@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MaterialList from "./MaterialList.vue";
 import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
@@ -25,7 +25,7 @@ const materialStore = useMaterialStore();
 const isOpen = ref(false);
 const materialId = ref(1);
 
-function openModal(id) {
+function openModal(id: number) {
   materialId.value = id;
   isOpen.value = true;
 }

@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MealsTab from "./MealsTab.vue";
 import { StatisticGetter } from "../db/mealStats";
 import { ref } from "vue";

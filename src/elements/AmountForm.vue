@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppAvatar from "./AppAvatar.vue";
 import { useMaterialStore } from "../stores/material";
 
@@ -40,7 +40,7 @@ defineProps({
 
 const emit = defineEmits(["update:amount"]);
 
-function updateAmount(value) {
+function updateAmount(value: number) {
   emit("update:amount", value);
 }
 </script>

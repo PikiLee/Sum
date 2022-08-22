@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive } from "vue";
 import AppAvatar from "../elements/AppAvatar.vue";
 import BaseButton from "../elements/BaseButton.vue";
@@ -51,6 +51,7 @@ import DefaultImg from "../assets/imgs/default.jpg";
 import { useNoti } from "../plugins/useNoti";
 
 import MaterialFormModal from "../elements/MaterialFormModal.vue";
+import type { Material } from "@/db/materialType";
 
 const notier = useNoti();
 const materialStore = useMaterialStore();
@@ -60,9 +61,14 @@ const materialStore = useMaterialStore();
  */
 const isOpen = ref(false);
 const isLoading = ref(false);
-const activeMaterial = ref(null);
+const activeMaterial = ref<Material>({} as Material);
 
-const formState = reactive({
+interface FormState {
+  name: string;
+  caloriesPerHundredGram: number;
+}
+
+const formState: FormState = reactive({
   name: "",
   caloriesPerHundredGram: 1,
 });
@@ -71,7 +77,7 @@ function handleCancel() {
   isOpen.value = false;
 }
 
-function openModal(materialId) {
+function openModal(materialId: number) {
   activeMaterial.value = materialStore.getById(materialId);
   formState.name = activeMaterial.value.name;
   formState.caloriesPerHundredGram =
@@ -93,7 +99,7 @@ function handleDelete() {
     .finally(() => (isLoading.value = false));
 }
 
-function handleOk(values) {
+function handleOk(values: FormState) {
   isLoading.value = true;
   db.materials
     .put({
@@ -102,6 +108,7 @@ function handleOk(values) {
       caloriesPerHundredGram: values.caloriesPerHundredGram,
       imgUrl: DefaultImg,
       default: false,
+      deleted: false,
     })
     .then(() => {
       notier.success("修改成功");

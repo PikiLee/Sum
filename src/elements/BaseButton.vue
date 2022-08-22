@@ -16,29 +16,25 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 
 gsap.registerPlugin(TextPlugin);
 
-const props = defineProps({
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
-  htmlType: {
-    type: String,
-    default: "button",
-  },
-});
+interface Props {
+  isLoading: boolean;
+  htmlType: "button" | "submit" | "reset" | undefined;
+}
+
+const props = defineProps<Props>();
 const emit = defineEmits(["click"]);
 
 /**
  * Handle Click
  */
-function handleClick(e) {
+function handleClick(e: Event) {
   if (props.isLoading) {
     e.preventDefault();
     return;

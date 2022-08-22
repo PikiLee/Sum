@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppTabVue from "../elements/AppTab.vue";
 import AppCard from "../elements/AppCard.vue";
 import SmallCardVue from "../elements/SmallCard.vue";
@@ -92,7 +92,7 @@ const activeIndex = ref(0);
 const meals = ["早餐", "午餐", "晚餐", "零食"];
 const tabs = ref(null);
 
-function handleToggle(index) {
+function handleToggle(index: number) {
   activeIndex.value = index;
   emit("toggle", index);
 }

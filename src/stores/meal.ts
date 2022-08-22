@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { liveQuery } from "dexie";
 import { useObservable } from "@vueuse/rxjs";
 import { db } from "../db/db";
-import { useMaterialStore } from "../stores/material";
+import { useMaterialStore } from "./material";
 import { useTDEEStore } from "./TDEE";
 
 function calcCaloriesSum(meals) {
