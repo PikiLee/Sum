@@ -1,7 +1,13 @@
 import AppNotis from "../components/AppNotis.vue";
-import { notier, notis } from "./useNoti";
+import { notier } from "./useNoti";
+import type { App } from "vue";
+
+interface Options {
+  duration: number;
+}
+
 export default {
-  install: (app, { duration }) => {
+  install: (app: App, { duration }: Options) => {
     app.component("AppNotis", AppNotis);
 
     notier.setDuration(duration);
@@ -39,9 +45,5 @@ export default {
     //     setTimeout(() => removeNoti(noti), 2000);
     //   },
     // };
-
-    app.provide("AppNotis", {
-      notis,
-    });
   },
 };

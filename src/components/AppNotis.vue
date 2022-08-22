@@ -10,11 +10,9 @@
   </div>
 </template>
 
-<script setup>
-import { inject } from "vue";
+<script setup lang="ts">
 import { gsap } from "gsap";
-
-const { notis } = inject("AppNotis");
+import { notis } from "@/plugins/useNoti";
 
 function onEnter(el, done) {
   gsap.from(el, {

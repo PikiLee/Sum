@@ -1,7 +1,8 @@
 import { ref } from "vue";
 
 // 0: done 1: start 2: restart
-export const isProgressing = ref(0);
+type IsProgressing = 0 | 1 | 2;
+export const isProgressing = ref<IsProgressing>(0);
 
 export const progressBar = {
   start: () => {

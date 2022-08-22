@@ -8,13 +8,13 @@
   </div>
 </template>
 
-<script setup>
-import { inject, onMounted, ref, watch } from "vue";
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
 import { gsap } from "gsap";
+import { isProgressing } from "./useProgressBar";
 
 const bar = ref(null);
 
-const { isProgressing } = inject("ProgressBar");
 const tl = gsap.timeline({ defaults: { ease: "none" } });
 
 onMounted(() => {

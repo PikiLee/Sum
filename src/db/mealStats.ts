@@ -3,16 +3,33 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
+import type {
+  Category,
+  Meal,
+  MealsByPeriod,
+  PopultatedMeal,
+  MealWithCalories,
+} from "./mealTypes";
+
+interface Options {
+  byPeriod: boolean;
+  populated: boolean;
+  calcCalories: boolean;
+  limit?: number;
+}
+
 export class StatisticGetter {
+  oneDayInMiliseconds: number;
+  categories: Category[];
   constructor() {
     this.oneDayInMiliseconds = 1000 * 60 * 60 * 24;
-    this.categories = ["早餐", "午餐", "晚餐", "零食"];
+    this.categories = [0, 1, 2, 3];
   }
 
-  getDayValidator(datetime) {
+  getDayValidator(datetime: number) {
     const targetDatetime = dayjs(datetime);
 
-    return (datetime) => {
+    return (datetime: number) => {
       return dayjs(datetime).isBetween(
         targetDatetime,
         targetDatetime,
@@ -22,15 +39,17 @@ export class StatisticGetter {
     };
   }
 
-  splitMealsByPeriod(meals) {
-    const mealsByPeriod = {};
+  splitMealsByPeriod(meals: Meal[]) {
+    const mealsByPeriod = {} as MealsByPeriod;
     this.categories.forEach((category) => {
-      mealsByPeriod[category] = meals.filter((meal) => meal.meal === category);
+      mealsByPeriod[category] = meals.filter(
+        (meal) => meal.category === category
+      );
     });
     return mealsByPeriod;
   }
 
-  async populateMeals(meals) {
+  async populateMeals(meals: Meal[]) {
     const result = [];
     for (const meal of meals) {
       const material = await db.materials.get(meal.materialId);
@@ -39,8 +58,8 @@ export class StatisticGetter {
     return result;
   }
 
-  calcCalories(populatedMeals) {
-    const meals = [];
+  calcCalories(populatedMeals: PopultatedMeal[]) {
+    const meals = [] as MealWithCalories[];
     populatedMeals.forEach((meal) => {
       const calories = Number(
         ((meal.amount * meal.material.caloriesPerHundredGram) / 100).toFixed(0)
@@ -50,7 +69,7 @@ export class StatisticGetter {
     return meals;
   }
 
-  async getMeals(datatime, options) {
+  async getMeals(datatime: number, options: Options) {
     const {
       byPeriod = false,
       populated = false,
@@ -81,13 +100,16 @@ export class StatisticGetter {
     return result;
   }
 
-  calcCaloriesByPeriod(mealsByPeriod) {
+  calcCaloriesByPeriod(mealsByPeriod: MealsByPeriod) {
     const caloriesByPeriod = {};
     let total = 0;
-    for (const [key, value] of Object.entries(mealsByPeriod)) {
-      const c = value.reduce((previousValue, currentMeal) => {
-        return previousValue + currentMeal.calories;
-      }, 0);
+    for (const key in mealsByPeriod) {
+      const c = mealsByPeriod[key].reduce(
+        (previousValue: number, currentMeal: Meal) => {
+          return previousValue + currentMeal.calories;
+        },
+        0
+      );
       caloriesByPeriod[key] = c;
       total += c;
     }
@@ -98,7 +120,7 @@ export class StatisticGetter {
     };
   }
 
-  async getCaloriesStats(datatime) {
+  async getCaloriesStats(datatime: number) {
     const mealsByPeriod = await this.getMeals(datatime, {
       byPeriod: true,
       populated: true,
