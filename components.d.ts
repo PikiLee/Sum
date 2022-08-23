@@ -12,7 +12,6 @@ declare module '@vue/runtime-core' {
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
     AInputNumber: typeof import('ant-design-vue/es')['InputNumber']
-    AppLoader: typeof import('./src/components/AppLoader.vue')['default']
     AppModal: typeof import('./src/components/AppModal.vue')['default']
     AppNav: typeof import('./src/components/AppNav.vue')['default']
     AppNoti: typeof import('./src/components/AppNoti.vue')['default']

@@ -9,11 +9,15 @@ export const useMaterialStore = defineStore({
   }),
   getters: {
     getById: (state) => {
-      return (id: number) => state.allMaterials.find((item) => item.id === id);
+      return (id: number) => {
+        const material = state.allMaterials.find((item) => item.id === id);
+        if (material) return material;
+        throw "找不到材料";
+      };
     },
     search: (state) => {
       return (str: string) =>
-        state.allMaterials.filter((material) => material.name.includes(str));
+        state.materials.filter((material) => material.name.includes(str));
     },
   },
   actions: {

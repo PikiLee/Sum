@@ -213,6 +213,7 @@ function handleSubmit() {
     TDEEStore.setTDEE(TDEE);
     localStorage.setItem("TDEEInfo", JSON.stringify(toRaw(formState)));
     localStorage.setItem("TDEE", String(TDEE));
+    localStorage.setItem("TDEESetted", JSON.stringify(true));
     notier.success("设置成功");
     setTimeout(() => router.push({ name: "home" }), 500);
 
@@ -228,7 +229,7 @@ function handleSubmit() {
 
 const card = ref<InstanceType<typeof AppCard2> | null>(null);
 
-function onLeave(_, done) {
+function onLeave(_: Element, done: () => void) {
   const tl = gsap.timeline();
   tl.set(card.value.$el, {
     transformPerspective: "700px",

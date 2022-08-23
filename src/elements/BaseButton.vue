@@ -47,12 +47,12 @@ function handleClick(e: Event) {
  */
 const loadingEl = ref(null);
 
-function animateLoading(_, done) {
+function animateLoading(_: Element, done: () => void) {
   if (loadingEl.value) {
     gsap.to(loadingEl.value, {
       text: {
         value: "加载中。。。",
-        diff: true,
+        type: "diff",
       },
       duration: 1,
       repeat: -1,

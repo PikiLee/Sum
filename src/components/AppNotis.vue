@@ -14,7 +14,7 @@
 import { gsap } from "gsap";
 import { notis } from "@/plugins/useNoti";
 
-function onEnter(el, done) {
+function onEnter(el: Element, done: () => void) {
   gsap.from(el, {
     scale: 0,
     y: () => window.innerHeight * -1,
@@ -23,7 +23,7 @@ function onEnter(el, done) {
   });
 }
 
-function onLeave(el, done) {
+function onLeave(el: Element, done: () => void) {
   gsap.to(el, {
     scale: 0,
     onComplete: done,
