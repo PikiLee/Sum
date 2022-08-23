@@ -27,14 +27,6 @@ export const exerciseLevelIndexMap = {
   每天运动及重体力工作: 4,
 };
 
-// export const exerciseLevelAlphaMap = {
-//   几乎或完全没有运动: 1.2,
-//   每周运动1至3次: 1.375,
-//   每周运动3至5次: 1.55,
-//   每天运动6至7次: 1.725,
-//   每天运动及重体力工作: 1.9,
-// };
-
 export const exerciseLevelAlphaMap = {
   0: 1.2,
   1: 1.375,
@@ -42,8 +34,6 @@ export const exerciseLevelAlphaMap = {
   3: 1.725,
   4: 1.9,
 };
-
-
 
 export interface TDEEFormState {
   gender: Gender;

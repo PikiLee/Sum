@@ -1,14 +1,19 @@
 <template>
   <div>
     <MealsTab
-      v-for="(meals, index) in mealsForDaysBefore"
+      v-for="(mealsByDay, index) in mealStore.mealStats"
       :key="index"
-      :mealsByPeriod="meals"
+      :mealsByPeriodList="mealsByDay.mealsByPeriod"
     >
       <template v-slot:title>
         <h2 class="text-lg text-center font-bold mt-4">
           {{ `${index + 1}天前` }}
         </h2>
+      </template>
+      <template v-slot:footer>
+        <AppCard>
+          <CaloriesStatsCard :transFormedTodayMeals="mealsByDay" />
+        </AppCard>
       </template>
     </MealsTab>
   </div>
@@ -16,34 +21,11 @@
 
 <script setup lang="ts">
 import MealsTab from "./MealsTab.vue";
-import { StatisticGetter } from "../services/mealService";
-import { ref } from "vue";
-import { useMaterialStore } from "../stores/material";
+import CaloriesStatsCard from "./CaloriesStatsCard.vue";
+import { useMealStore } from "@/stores/meal";
+import AppCard from "../elements/AppCard.vue";
 
-useMaterialStore();
-
-const getter = new StatisticGetter();
-
-const mealsForDaysBefore = ref([]);
-
-const aDay = 1000 * 60 * 60 * 24;
-Promise.all([
-  getter.getMeals(Date.now(), {
-    byPeriod: true,
-    populate: true,
-    calcCalories: true,
-  }),
-  getter.getMeals(Date.now() - aDay, {
-    byPeriod: true,
-    populate: true,
-    calcCalories: true,
-  }),
-  getter.getMeals(Date.now() - 2 * aDay, {
-    byPeriod: true,
-    populate: true,
-    calcCalories: true,
-  }),
-]).then((values) => (mealsForDaysBefore.value = values));
+const mealStore = useMealStore();
 </script>
 
 <style lang="scss" scoped></style>

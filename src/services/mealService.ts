@@ -105,7 +105,8 @@ export async function getMeals(datatime: number, options?: Options) {
     .toArray();
 
   if (transform) {
-    await transformMeals(result);
+    const mealsByday = await transformMeals(result);
+    return mealsByday;
   }
   return result;
 }

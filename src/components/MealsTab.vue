@@ -56,6 +56,8 @@
         />
       </AppCard>
     </AppTabVue>
+
+    <slot name="footer" />
   </div>
 </template>
 

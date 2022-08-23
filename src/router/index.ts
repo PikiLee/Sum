@@ -50,7 +50,10 @@ const router = createRouter({
          */
 
         const meals = await mealService.getMeals(Date.now());
-        mealStore.setTodayMeals(meals);
+        const con = "caloriesByDay" in meals;
+        if (!con) {
+          mealStore.setTodayMeals(meals);
+        }
 
         await retrieveMaterialsToStore();
         return true;
@@ -74,6 +77,21 @@ const router = createRouter({
       path: "/statistics",
       name: "statistics",
       component: () => import("../views/StatisticsView.vue"),
+      beforeEnter: async () => {
+        const aDay = 1000 * 60 * 60 * 24;
+
+        for (let i = 1; i < 4; i++) {
+          const mealsByDay = await mealService.getMeals(Date.now() - aDay, {
+            transform: true,
+          });
+          const mealStore = useMealStore();
+          if ("caloriesByDay" in mealsByDay) {
+            mealStore.addMealStats(mealsByDay);
+          }
+        }
+
+        return true;
+      },
     },
     // {
     //   path: '/about',
