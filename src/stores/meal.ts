@@ -3,6 +3,7 @@ import type {
   MealsByDay,
   Category,
   PopulatedMealWithCalories,
+  UpdatedMeal,
 } from "./../db/mealTypes";
 import { categories } from "./../db/mealTypes";
 import { defineStore } from "pinia";
@@ -29,11 +30,6 @@ export const useMealStore = defineStore({
     currentCategory: 0,
     categories: categories,
     todayMeals: [] as Meal[],
-    // recentlyAddedMeals: useObservable(
-    //   liveQuery(() => {
-    //     return db.meals.orderBy("date").desc().limit(5).toArray();
-    //   })
-    // ),
     transFormedTodayMeals: {} as MealsByDay,
     recentMeals: [] as PopulatedMealWithCalories[],
   }),
@@ -91,6 +87,22 @@ export const useMealStore = defineStore({
     },
     addTodayMeal(meal: Meal) {
       this.todayMeals.push(meal);
+    },
+    updateTodayMeal(id: number, updatedMeal: UpdatedMeal) {
+      this.todayMeals = this.todayMeals.map((meal) => {
+        if (meal.id === id) {
+          return Object.assign(meal, updatedMeal);
+        } else {
+          return meal;
+        }
+      });
+    },
+    deleteTodayMeal(id: number) {
+      let index = 0;
+      this.todayMeals.forEach((meal, i) => {
+        if (meal.id === id) index = i;
+      });
+      this.todayMeals.splice(index, 1);
     },
     setTransFormedTodayMeals(transFormedTodayMeals: MealsByDay) {
       this.transFormedTodayMeals = transFormedTodayMeals;

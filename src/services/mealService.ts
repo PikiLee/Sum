@@ -2,6 +2,7 @@ import { useMealStore } from "@/stores/meal";
 import { db } from "../db/db";
 import { categories } from "../db/mealTypes";
 import { useNoti } from "@/plugins/useNoti";
+import type { UpdatedMeal } from "../db/mealTypes";
 
 const notier = useNoti();
 
@@ -87,28 +88,25 @@ export async function transformMeals(meals: Meal[]) {
   return mealsByDay;
 }
 
+export async function getRecentMeals(limit: number) {
+  const meals = await db.meals.reverse().limit(limit).toArray();
+  const recentMeals = await populateAndCalcCalories(meals);
+
+  return recentMeals;
+}
+
 export async function getMeals(datatime: number, options?: Options) {
   if (!options) options = {} as Options;
-  const { transform = false, limit = 0, populateAndCalories = false } = options;
+  const { transform = false } = options;
   const dayValidator = getDayValidator(datatime);
 
-  let result;
-  if (limit > 0) {
-    result = await db.meals
-      .filter((meal) => dayValidator(meal.date))
-      .limit(limit)
-      .reverse()
-      .sortBy("date");
-  } else {
-    result = await db.meals.filter((meal) => dayValidator(meal.date)).toArray();
-  }
+  const result = await db.meals
+    .filter((meal) => dayValidator(meal.date))
+    .toArray();
 
   if (transform) {
     await transformMeals(result);
-  } else if (populateAndCalories) {
-    result = await populateAndCalcCalories(result);
   }
-
   return result;
 }
 
@@ -126,8 +124,33 @@ function add(meal: Meal) {
     });
 }
 
+function update(id: number, meal: UpdatedMeal) {
+  return db.meals
+    .update(id, meal)
+    .then(() => {
+      const mealStore = useMealStore();
+      mealStore.updateTodayMeal(id, meal);
+      notier.success("修改成功");
+    })
+    .catch(() => notier.error("修改失败"));
+}
+
+function deleteMeal(id: number) {
+  return db.meals
+    .delete(id)
+    .then(() => {
+      const mealStore = useMealStore();
+      mealStore.deleteTodayMeal(id);
+      notier.success("删除成功");
+    })
+    .catch(() => notier.error("删除失败"));
+}
+
 export default {
   getMeals,
+  getRecentMeals,
   transformMeals,
   add,
+  update,
+  deleteMeal,
 };

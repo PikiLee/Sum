@@ -14,7 +14,7 @@
       >
         <div
           class="grid grid-cols-2 gap-3"
-          v-if="mealsByPeriod.meals.length > 1"
+          v-if="mealsByPeriod.meals.length >= 1"
         >
           <SmallCardVue
             v-for="meal in mealsByPeriod.meals"

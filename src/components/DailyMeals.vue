@@ -30,7 +30,7 @@
     </AppCard> -->
 
     <!-- Modal -->
-    <!-- <AppModal
+    <AppModal
       :isOpen="isOpen"
       @cancel="handleCancel"
       :isLoading="isLoading"
@@ -43,7 +43,7 @@
         <BaseButton @click="deleteMeal">删除</BaseButton>
         <BaseButton @click="handleOk" :isLoading="isLoading">确定</BaseButton>
       </template>
-    </AppModal> -->
+    </AppModal>
   </div>
 </template>
 
@@ -59,7 +59,8 @@ import AppProgress from "../elements/AppProgress.vue";
 import { useTDEEStore } from "../stores/TDEE";
 import BaseButton from "../elements/BaseButton.vue";
 import CaloriesStatsCard from "./CaloriesStatsCard.vue";
-import type { Meal } from "@/db/mealTypes";
+import { Category, type Meal } from "@/db/mealTypes";
+import mealService from "@/services/mealService";
 
 const notier = useNoti();
 const mealStore = useMealStore();
@@ -74,35 +75,36 @@ const isOpen = ref(false);
 const amount = ref(0);
 const isLoading = ref(false);
 const error = ref("");
-const meal = ref<Meal>({} as Meal);
+const meal = ref<Meal | null>(null);
 
 function handleCancel() {
   isOpen.value = false;
 }
 
 function openModal(mealId: number) {
-  meal.value = mealStore.getById(mealId);
-  amount.value = meal.value.amount;
+  const res = mealStore.getById(mealId);
+  if (res) {
+    meal.value = res;
+    amount.value = res.amount;
+  }
   isOpen.value = true;
 }
 
 function handleToggle(index: number) {
-  mealStore.setCurrentMeal(mealStore.meals[index]);
+  mealStore.setCurrentCategory(index);
 }
 
 function deleteMeal() {
-  db.meals
-    .delete(meal.value.id)
-    .then(() => {
-      notier.success("删除成功");
-      isOpen.value = false;
-    })
-    .catch(() => {
-      notier.error("删除失败");
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
+  if (meal.value && meal.value.id) {
+    mealService
+      .deleteMeal(meal.value.id)
+      .then(() => {
+        isOpen.value = false;
+      })
+      .finally(() => {
+        isLoading.value = false;
+      });
+  }
 }
 
 function handleOk() {
@@ -110,20 +112,18 @@ function handleOk() {
     notier.error("重量最少为1克");
   }
   isLoading.value = true;
-  db.meals
-    .update(meal.value.id, {
-      amount: amount.value,
-    })
-    .then(() => {
-      notier.success("修改成功");
-      isOpen.value = false;
-    })
-    .catch(() => {
-      notier.error("修改失败");
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
+  if (meal.value && meal.value.id) {
+    mealService
+      .update(meal.value.id, {
+        amount: amount.value,
+      })
+      .then(() => {
+        isOpen.value = false;
+      })
+      .finally(() => {
+        isLoading.value = false;
+      });
+  }
 }
 </script>
 

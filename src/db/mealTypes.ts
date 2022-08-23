@@ -31,6 +31,13 @@ export interface Meal {
   category: Category;
 }
 
+export interface UpdatedMeal {
+  materialId?: number;
+  amount?: number;
+  date?: number;
+  category?: Category;
+}
+
 export interface PopulatedMealWithCalories extends Meal {
   material: Material;
   calories: number;

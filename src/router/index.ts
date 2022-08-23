@@ -36,7 +36,7 @@ const router = createRouter({
                 mealStore.setTransFormedTodayMeals(transFormedTodayMeals)
               );
             mealService
-              .getMeals(Date.now(), { limit: 5, populateAndCalories: true })
+              .getRecentMeals(5)
               .then((meals) => mealStore.setRecentMeals(meals));
           },
           { immediate: true, deep: true }
