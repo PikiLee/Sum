@@ -23,8 +23,13 @@
         </a-form-item>
         <a-form-item label="性别" name="gender">
           <a-radio-group v-model:value="formState.gender">
-            <a-radio :style="radioStyle" value="男">男</a-radio>
-            <a-radio :style="radioStyle" value="女">女</a-radio>
+            <a-radio
+              :style="radioStyle"
+              :value="value"
+              v-for="(value, key) in genderIndexMap"
+              :key="key"
+              >{{ key }}</a-radio
+            >
           </a-radio-group>
         </a-form-item>
         <a-form-item label="身高(厘米)" name="height">
@@ -44,9 +49,9 @@
         <a-form-item label="每周运动量" name="exerciseLevel">
           <a-select v-model:value="formState.exerciseLevel" size="small">
             <a-select-option
-              v-for="(_, key) in exerciseLevels"
+              v-for="(value, key) in exerciseLevelIndexMap"
               :key="key"
-              :value="key"
+              :value="value"
               >{{ key }}</a-select-option
             >
           </a-select>
@@ -85,7 +90,12 @@ import { useNoti } from "../plugins/useNoti";
 
 import { useRouter } from "vue-router";
 import { gsap } from "gsap";
-import type { TDEEFormState, Gender } from "@/db/TDEEType";
+import type { TDEEFormState } from "@/db/TDEEType";
+import {
+  genderIndexMap,
+  exerciseLevelAlphaMap,
+  exerciseLevelIndexMap,
+} from "@/db/TDEEType";
 
 const router = useRouter();
 const notier = useNoti();
@@ -95,7 +105,7 @@ const TDEEStore = useTDEEStore();
 const inputDirectly = ref(false);
 
 // form 1
-let TDEEInfo: TDEEFormState;
+let TDEEInfo: TDEEFormState | null = null;
 const item = localStorage.getItem("TDEEInfo");
 if (item) {
   TDEEInfo = JSON.parse(item);
@@ -106,17 +116,9 @@ const formDefault: TDEEFormState = {
   age: 20,
   height: 178,
   weight: 80,
-  exerciseLevel: 0,
+  exerciseLevel: 1,
 };
 const formState: TDEEFormState = reactive(TDEEInfo || formDefault);
-
-const exerciseLevels = {
-  0: 1.2,
-  1: 1.375,
-  2: 1.55,
-  3: 1.725,
-  4: 1.9,
-};
 
 const radioStyle = reactive({
   display: "flex",
@@ -192,14 +194,19 @@ function handleSubmit() {
         13.7 * formState.weight +
         5 * formState.height -
         6.8 * formState.age;
+
       TDEE = Number(
-        (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0)
+        (TDEE * exerciseLevelAlphaMap[formState.exerciseLevel]).toFixed(0)
       );
     } else {
-      (TDEE = 655 + 9.6 * formState.weight + 1.8 * formState.height - 4),
-        7 * formState.age;
+      TDEE =
+        655 +
+        9.6 * formState.weight +
+        1.8 * formState.height -
+        4.7 * formState.age;
+
       TDEE = Number(
-        (TDEE * exerciseLevels[formState.exerciseLevel]).toFixed(0)
+        (TDEE * exerciseLevelAlphaMap[formState.exerciseLevel]).toFixed(0)
       );
     }
 

@@ -1,4 +1,4 @@
-import type { Material } from "./../db/materialType";
+import type { Material, UpdatedMaterial } from "./../db/materialType";
 import { defineStore } from "pinia";
 
 export const useMaterialStore = defineStore({
