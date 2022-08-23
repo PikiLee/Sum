@@ -229,7 +229,7 @@ function handleSubmit() {
 
 const card = ref<InstanceType<typeof AppCard2> | null>(null);
 
-function onLeave(_, done) {
+function onLeave(_: Element, done: () => void) {
   const tl = gsap.timeline();
   tl.set(card.value.$el, {
     transformPerspective: "700px",

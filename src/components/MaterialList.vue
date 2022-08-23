@@ -95,14 +95,14 @@ function handleOk(values: { name: string; caloriesPerHundredGram: number }) {
  * Animation
  */
 
-function onLeave(el, done) {
+function onLeave(el: Element, done: () => void) {
   gsap.to(el, {
     scaleX: 0,
     onComplete: done,
   });
 }
 
-function onEnter(el, done) {
+function onEnter(el: Element, done: () => void) {
   gsap.from(el, {
     scaleX: 0,
     onComplete: done,

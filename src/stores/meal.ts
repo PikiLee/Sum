@@ -7,10 +7,7 @@ import type {
 } from "./../db/mealTypes";
 import { categories } from "./../db/mealTypes";
 import { defineStore } from "pinia";
-import { db } from "../db/db";
-import { useMaterialStore } from "./material";
 import { useTDEEStore } from "./TDEE";
-import mealService from "../services/mealService";
 
 export const useMealStore = defineStore({
   id: "meal",

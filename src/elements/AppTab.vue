@@ -23,9 +23,8 @@
 
 <script setup lang="ts">
 // Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue";
+import { Swiper } from "swiper/vue";
 import type { Swiper as SwiperType } from "swiper/types";
-import DefaultImg from "../assets/imgs/default.jpg";
 import BaseTab from "./BaseTab.vue";
 import { ref } from "vue";
 

@@ -19,8 +19,7 @@ const props = defineProps<{
 }>();
 
 const progress = ref(null);
-
-let progressTo;
+let progressTo: gsap.QuickToFunc;
 onMounted(() => {
   if (progress.value) {
     gsap.set(progress.value, {

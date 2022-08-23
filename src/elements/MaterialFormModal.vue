@@ -119,7 +119,7 @@ const rules = {
 };
 
 function handleOk() {
-  formRef.value?.validateFields().then((values: FormState) => {
+  formRef.value?.validateFields().then((values) => {
     emit("ok", values);
   });
 }
