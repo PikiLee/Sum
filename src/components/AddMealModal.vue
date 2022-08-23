@@ -15,7 +15,6 @@
 import AppModal from "./AppModal.vue";
 import { ref, watch } from "vue";
 import { useMealStore } from "../stores/meal";
-import { db } from "../db/db";
 import { useNoti } from "../plugins/useNoti";
 import AmountForm from "../elements/AmountForm.vue";
 import mealService from "@/services/mealService";

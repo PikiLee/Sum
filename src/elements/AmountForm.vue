@@ -38,6 +38,8 @@ defineProps({
   },
 });
 
+
+
 const emit = defineEmits(["update:amount"]);
 
 function updateAmount(value: number) {

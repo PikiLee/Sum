@@ -6,7 +6,7 @@ import SearchBar from "../components/SearchBar.vue";
 </script>
 
 <template>
-  <!-- <SearchBar class="my-4" /> -->
+  <SearchBar class="my-4" />
   <DailyMealsVue />
   <RecentAddedBoard />
   <MaterialBoardVue />

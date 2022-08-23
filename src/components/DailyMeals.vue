@@ -25,6 +25,12 @@
         }}</span
         >千卡
       </h2>
+      <h3 class="text-center mb-2" v-if="!TDEESetted">
+        默认目标2500千卡，
+        <span class="text-green-500">
+          <RouterLink :to="{ name: 'expenditure' }">点击设置目标</RouterLink>
+        </span>
+      </h3>
       <AppProgress :progress="mealStore.caloriesProgress" />
     </AppCard>
 
@@ -63,6 +69,12 @@ import mealService from "@/services/mealService";
 const notier = useNoti();
 const mealStore = useMealStore();
 const TDEEStore = useTDEEStore();
+
+const TDEESetted = ref<boolean>(false);
+
+if (localStorage.getItem("TDEESetted")) {
+  TDEESetted.value = true;
+}
 
 //
 
