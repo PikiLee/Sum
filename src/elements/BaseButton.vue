@@ -24,8 +24,8 @@ import { TextPlugin } from "gsap/TextPlugin";
 gsap.registerPlugin(TextPlugin);
 
 interface Props {
-  isLoading: boolean;
-  htmlType: "button" | "submit" | "reset" | undefined;
+  isLoading?: boolean;
+  htmlType?: "button" | "submit" | "reset" | undefined;
 }
 
 const props = defineProps<Props>();

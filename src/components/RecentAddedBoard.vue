@@ -4,9 +4,9 @@
     <h3 class="text-md text-center">点击卡片添加到餐盘</h3>
     <AppCard class="grid grid-cols-2 gap-2">
       <MaterialCard
-        v-for="meal in mealStore.recentlyAddedMeals"
+        v-for="meal in mealStore.recentMeals"
         :key="meal.date"
-        :material="materialStore.getById(meal.materialId)"
+        :material="meal.material"
         :amount="meal.amount"
         @click:item="openModal"
       />
@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppCard from "../elements/AppCard.vue";
 import MaterialCard from "./MaterialCard.vue";
 import { useMaterialStore } from "../stores/material";
@@ -40,7 +40,7 @@ const isOpen = ref(false);
 const amount = ref(0);
 const materialId = ref(1);
 
-function openModal(values) {
+function openModal(values: number[]) {
   materialId.value = values[0];
   amount.value = values[1];
   isOpen.value = true;

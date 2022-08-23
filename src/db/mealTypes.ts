@@ -7,6 +7,15 @@ export enum Category {
   "零食",
 }
 
+export const categories = [
+  Category.早餐,
+  Category.午餐,
+  Category.晚餐,
+  Category.零食,
+];
+
+export const cates = ["早餐", "午餐", "晚餐", "零食"];
+
 export type CategoryType = {
   0: "早餐";
   1: "午餐";
@@ -15,21 +24,25 @@ export type CategoryType = {
 };
 
 export interface Meal {
-  id: number;
+  id?: number;
   materialId: number;
   amount: number;
   date: number;
   category: Category;
 }
 
-export type MealsByPeriod = {
-  [Property in keyof CategoryType]: Meal[];
-};
-
-export interface PopultatedMeal extends Meal {
+export interface PopulatedMealWithCalories extends Meal {
   material: Material;
+  calories: number;
 }
 
-export interface MealWithCalories extends PopultatedMeal {
-  calories: number;
+export interface MealsByPeriod {
+  meals: PopulatedMealWithCalories[];
+  category: Category;
+  caloriesByPeriod: number;
+}
+
+export interface MealsByDay {
+  mealsByPeriod: MealsByPeriod[];
+  caloriesByDay: number;
 }

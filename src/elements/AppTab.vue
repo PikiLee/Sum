@@ -26,8 +26,8 @@ export default defineComponent({
     });
 
     const activeTab = computed(() => {
-      if (tabs.value) {
-        return tabs.value.children[props.activeIndex];
+      if (tabs.value && tabs.value.length > 0) {
+        return tabs.value[0].children[props.activeIndex];
       }
 
       return null;

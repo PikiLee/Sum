@@ -11,13 +11,14 @@
   </AppModal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppModal from "./AppModal.vue";
 import { ref, watch } from "vue";
 import { useMealStore } from "../stores/meal";
 import { db } from "../db/db";
 import { useNoti } from "../plugins/useNoti";
 import AmountForm from "../elements/AmountForm.vue";
+import mealService from "@/services/mealService";
 
 const notier = useNoti();
 const mealStore = useMealStore();
@@ -59,21 +60,17 @@ function handleCancel() {
 
 function handleOk() {
   isLoading.value = true;
-  db.meals
-    .put({
+  mealService
+    .add({
       materialId: props.materialId,
       amount: amount.value,
       date: Date.now(),
-      meal: mealStore.currentMeal,
+      category: mealStore.currentCategory,
     })
     .then(() => {
       isLoading.value = false;
-      notier.success("添加成功");
       emit("update:isOpen", false);
       emit("ok");
-    })
-    .catch(() => {
-      notier.error("添加失败");
     })
     .finally(() => (isLoading.value = false));
 }

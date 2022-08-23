@@ -16,10 +16,10 @@ onMounted(() => {
 <template>
   <div class="container px-4 wrapper mx-auto" ref="wrapper">
     <AppNavVue ref="navBar" />
-    <AppNotis />
+    <!-- <AppNotis /> -->
     <RouterView />
   </div>
-  <ProgressBar />
+  <!-- <ProgressBar /> -->
   <!-- <AppLoaderVue /> -->
 </template>
 

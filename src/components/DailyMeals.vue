@@ -1,7 +1,7 @@
 <template>
   <div>
     <MealsTab
-      :mealsByPeriod="mealStore.todayMealsByPeriod"
+      :mealsByPeriodList="mealStore.transFormedTodayMeals.mealsByPeriod"
       @click:item="openModal"
       @toggle="handleToggle"
     >
@@ -12,7 +12,7 @@
     </MealsTab>
 
     <!-- Progress -->
-    <h1 class="text-lg text-center font-bold">今日统计</h1>
+    <!-- <h1 class="text-lg text-center font-bold">今日统计</h1>
     <AppCard>
       <CaloriesStatsCard
         :caloriesByPeriod="mealStore.todayCaloriesByPeriod"
@@ -27,10 +27,10 @@
         >千卡
       </h2>
       <AppProgress :progress="mealStore.caloriesProgress" />
-    </AppCard>
+    </AppCard> -->
 
     <!-- Modal -->
-    <AppModal
+    <!-- <AppModal
       :isOpen="isOpen"
       @cancel="handleCancel"
       :isLoading="isLoading"
@@ -43,11 +43,12 @@
         <BaseButton @click="deleteMeal">删除</BaseButton>
         <BaseButton @click="handleOk" :isLoading="isLoading">确定</BaseButton>
       </template>
-    </AppModal>
+    </AppModal> -->
   </div>
 </template>
 
 <script setup lang="ts">
+import MealsTab from "./MealsTab.vue";
 import AppCard from "../elements/AppCard.vue";
 import { ref } from "vue";
 import { useMealStore } from "../stores/meal";

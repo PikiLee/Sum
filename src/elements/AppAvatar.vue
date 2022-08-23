@@ -20,9 +20,9 @@ import { gsap } from "gsap";
 
 const props = defineProps<{
   imgSrc: string;
-  borderRotate: boolean;
-  jump: boolean;
-  size: string;
+  borderRotate?: boolean;
+  jump?: boolean;
+  size?: string;
 }>();
 
 // container

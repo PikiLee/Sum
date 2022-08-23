@@ -22,8 +22,3 @@ export class sumDb extends Dexie {
 }
 
 export const db = new sumDb();
-// export const db = new Dexie("sumDb");
-// db.version(1).stores({
-//   materials: "++id, name, caloriesPerHundredGram, imgUrl, default, deleted",
-//   meals: "++id, materialId, amount, date, category",
-// });

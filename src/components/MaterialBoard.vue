@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import MaterialList from "./MaterialList.vue";
+import AddMealModal from "./AddMealModal.vue";
 import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
 

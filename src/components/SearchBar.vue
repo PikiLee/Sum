@@ -44,20 +44,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
 import MaterialCard from "./MaterialCard.vue";
 import { gsap } from "gsap";
+import type { Meal } from "@/db/mealTypes";
 
 const materialStore = useMaterialStore();
 const searchInput = ref("");
-const results = ref([]);
+const results = ref<Meal[]>([]);
 const notFound = ref(false);
 const active = ref(false);
-const inputEl = ref(null);
+const inputEl = ref<HTMLInputElement | null>(null);
 
-let timer = null;
+let timer: number | null = null;
 
 function openList() {
   if (searchInput.value.length > 0) {
@@ -77,7 +78,7 @@ function openList() {
       }
     }, 500);
   } else {
-    clearTimeout(timer);
+    if (timer) clearTimeout(timer);
     active.value = false;
     results.value = [];
     notFound.value = false;
@@ -95,14 +96,14 @@ function clearInput() {
 const materialId = ref(1);
 const isOpen = ref(false);
 
-function openModal(id) {
+function openModal(id: number) {
   materialId.value = id;
   isOpen.value = true;
 }
 
 function handleOk() {
   clearInput();
-  inputEl.value.focus();
+  inputEl.value?.focus();
 }
 
 /**

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import MealsTab from "./MealsTab.vue";
-import { StatisticGetter } from "../db/mealStats";
+import { StatisticGetter } from "../services/mealService";
 import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
 

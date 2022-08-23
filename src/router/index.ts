@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import MaterialsView from "../views/MaterialsView.vue";
 import { useProgressBar } from "../plugins/progressBar/useProgressBar";
+import { useMealStore } from "@/stores/meal";
+import mealService from "../services/mealService";
+import materialService from "../services/materialService";
+import { useMaterialStore } from "@/stores/material";
+import { watch } from "vue";
 
 const progressBar = useProgressBar();
 const router = createRouter({
@@ -11,6 +16,40 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      beforeEnter: async () => {
+        const materialStore = useMaterialStore();
+        const mealStore = useMealStore();
+
+        /**
+         * Set up stores
+         */
+
+        const meals = await mealService.getMeals(Date.now());
+        mealStore.setTodayMeals(meals);
+
+        watch(
+          mealStore.todayMeals,
+          () => {
+            mealService
+              .transformMeals(mealStore.todayMeals)
+              .then((transFormedTodayMeals) =>
+                mealStore.setTransFormedTodayMeals(transFormedTodayMeals)
+              );
+            mealService
+              .getMeals(Date.now(), { limit: 5, populateAndCalories: true })
+              .then((meals) => mealStore.setRecentMeals(meals));
+          },
+          { immediate: true, deep: true }
+        );
+
+        const allMaterials = await materialService.getAll();
+        materialStore.setAllMaterials(allMaterials);
+
+        const materials = await materialService.getNotDeleted();
+        materialStore.setMaterials(materials);
+
+        return true;
+      },
     },
     {
       path: "/materials",
