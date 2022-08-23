@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { RouterView } from "vue-router";
-// import AppLoaderVue from "./components/AppLoader.vue";
 import AppNavVue from "./components/AppNav.vue";
 
 const navBar = ref<InstanceType<typeof AppNavVue> | null>(null);
@@ -20,7 +19,6 @@ onMounted(() => {
     <RouterView />
   </div>
   <ProgressBar />
-  <!-- <AppLoaderVue /> -->
 </template>
 
 <style scoped>

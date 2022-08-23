@@ -1,86 +1,58 @@
-<script lang="ts">
-import { h, defineComponent } from "vue";
-import BaseTab from "../elements/BaseTab.vue";
-import { gsap } from "gsap";
-import { computed, Transition } from "vue";
-export default defineComponent({
-  props: {
-    tabTitles: {
-      type: Array,
-      required: true,
-    },
-    activeIndex: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: ["toggle"],
-  setup(props, { emit, slots }) {
-    // get the active tab
-    const tabs = computed(() => {
-      // slots.default?
-      if (slots.default) {
-        return slots.default();
-      }
-      return null;
-    });
+<template>
+  <div class="mb-3">
+    <swiper
+      :slides-per-view="1"
+      :space-between="50"
+      loop
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+      autoHeight
+    >
+      <slot />
+      <template v-slot:container-start>
+        <BaseTab
+          :tabTitles="tabTitles"
+          :activeIndex="activeIndex"
+          class="my-3"
+          @update:activeIndex="handelToggle"
+        />
+      </template>
+    </swiper>
+  </div>
+</template>
 
-    const activeTab = computed(() => {
-      if (tabs.value && tabs.value.length > 0) {
-        return tabs.value[0].children[props.activeIndex];
-      }
+<script setup lang="ts">
+// Import Swiper Vue.js components
+import { Swiper } from "swiper/vue";
+import type { Swiper as SwiperType } from "swiper/types";
+import BaseTab from "./BaseTab.vue";
+import { ref } from "vue";
 
-      return null;
-    });
+// Import Swiper styles
+import "swiper/css";
 
-    /**
-     * Animation
-     */
+defineProps<{
+  tabTitles: string[];
+}>();
 
-    function enter(el, done) {
-      gsap.fromTo(
-        el,
-        {
-          xPercent: 150,
-        },
-        {
-          xPercent: 0,
-          duration: 0.5,
-          ease: "back(2)",
-          onComplete: () => {
-            done();
-          },
-        }
-      );
-    }
+const activeIndex = ref(0);
+let swiperIns: SwiperType | null = null;
+const onSwiper = (swiper: SwiperType) => {
+  swiperIns = swiper;
+  activeIndex.value = swiper.realIndex;
+};
+const onSlideChange = () => {
+  if (swiperIns) {
+    activeIndex.value = swiperIns.realIndex;
+  }
+};
 
-    function leave(el, done) {
-      gsap.to(el, {
-        xPercent: -150,
-        duration: 0.5,
-        onComplete: () => {
-          done();
-        },
-      });
-    }
-
-    return () =>
-      h("div", { class: ["p-1", "mt-2"] }, [
-        h(BaseTab, {
-          tabTitles: props.tabTitles,
-          activeIndex: props.activeIndex,
-          "onUpdate:activeIndex": (index: number) => emit("toggle", index),
-        }),
-        h("div", { class: ["mt-2"] }, [
-          h(
-            Transition,
-            { mode: "out-in", onEnter: enter, onLeave: leave },
-            () => h(activeTab.value)
-          ),
-        ]),
-      ]);
-  },
-});
+const handelToggle = (index: number) => {
+  if (swiperIns) {
+    swiperIns?.slideTo(index);
+    activeIndex.value = index;
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>

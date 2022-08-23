@@ -12,5 +12,8 @@
     {
       "path": "./tsconfig.config.json"
     }
+  ],
+  "files": [
+    "node_modules/gsap/types/index.d.ts"
   ]
 }

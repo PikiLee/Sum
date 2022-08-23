@@ -64,7 +64,7 @@ defineEmits(["cancel", "ok"]);
 /**
  * Animations
  */
-function animateModalEnter(el: HTMLDivElement, done) {
+function animateModalEnter(el: Element, done: () => void) {
   gsap.from(el, {
     scale: 0,
     opacity: 0,
@@ -74,7 +74,7 @@ function animateModalEnter(el: HTMLDivElement, done) {
   });
 }
 
-function animateModalLeave(el: HTMLDivElement, done) {
+function animateModalLeave(el: Element, done: () => void) {
   gsap.to(el, {
     scale: 0,
     opacity: 0,

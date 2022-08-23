@@ -24,13 +24,11 @@
 <script setup lang="ts">
 import AppCard from "../elements/AppCard.vue";
 import MaterialCard from "./MaterialCard.vue";
-import { useMaterialStore } from "../stores/material";
 import { useMealStore } from "../stores/meal";
 
 import { ref } from "vue";
 import AddMealModal from "./AddMealModal.vue";
 
-const materialStore = useMaterialStore();
 const mealStore = useMealStore();
 
 /**

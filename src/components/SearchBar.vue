@@ -49,11 +49,11 @@ import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
 import MaterialCard from "./MaterialCard.vue";
 import { gsap } from "gsap";
-import type { Meal } from "@/db/mealTypes";
+import type { Material } from "@/db/materialType";
 
 const materialStore = useMaterialStore();
 const searchInput = ref("");
-const results = ref<Meal[]>([]);
+const results = ref<Material[]>([]);
 const notFound = ref(false);
 const active = ref(false);
 const inputEl = ref<HTMLInputElement | null>(null);
@@ -109,14 +109,14 @@ function handleOk() {
 /**
  * Animation
  */
-function onLeave(el, done) {
+function onLeave(el: Element, done: () => void) {
   gsap.to(el, {
     opacity: 0,
     onComplete: done,
   });
 }
 
-function onEnter(el, done) {
+function onEnter(el: Element, done: () => void) {
   gsap.from(el, {
     scale: 0,
     opacity: 0,

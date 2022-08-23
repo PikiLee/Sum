@@ -14,16 +14,12 @@
 import { onMounted, ref, watch } from "vue";
 import { gsap } from "gsap";
 
-const props = defineProps({
-  progress: {
-    type: Number,
-    required: true,
-  },
-});
+const props = defineProps<{
+  progress: number;
+}>();
 
 const progress = ref(null);
-
-let progressTo;
+let progressTo: gsap.QuickToFunc;
 onMounted(() => {
   if (progress.value) {
     gsap.set(progress.value, {
@@ -32,6 +28,7 @@ onMounted(() => {
     progressTo = gsap.quickTo(progress.value, "scaleX", {
       duration: 1,
     });
+    progressTo(props.progress);
   }
 });
 

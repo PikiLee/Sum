@@ -7,10 +7,7 @@ import type {
 } from "./../db/mealTypes";
 import { categories } from "./../db/mealTypes";
 import { defineStore } from "pinia";
-import { db } from "../db/db";
-import { useMaterialStore } from "./material";
 import { useTDEEStore } from "./TDEE";
-import mealService from "../services/mealService";
 
 export const useMealStore = defineStore({
   id: "meal",
@@ -30,7 +27,9 @@ export const useMealStore = defineStore({
       const TDEEStore = useTDEEStore();
       if (state.todayMeals && TDEEStore.TDEE) {
         const calories = state.transFormedTodayMeals.caloriesByDay;
-        return Number((1 - calories / TDEEStore.TDEE).toFixed(2));
+        const progress = Number((1 - calories / TDEEStore.TDEE).toFixed(2));
+        if (progress < 0) return 0;
+        return progress;
       } else {
         return 1;
       }
