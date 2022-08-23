@@ -46,12 +46,11 @@ import { ref, reactive } from "vue";
 import AppAvatar from "../elements/AppAvatar.vue";
 import BaseButton from "../elements/BaseButton.vue";
 import { useMaterialStore } from "../stores/material";
-import { db } from "../db/db";
-import DefaultImg from "../assets/imgs/default.jpg";
 import { useNoti } from "../plugins/useNoti";
 
 import MaterialFormModal from "../elements/MaterialFormModal.vue";
 import type { Material } from "@/db/materialType";
+import materialService from "@/services/materialService";
 
 const notier = useNoti();
 const materialStore = useMaterialStore();
@@ -78,44 +77,43 @@ function handleCancel() {
 }
 
 function openModal(materialId: number) {
-  activeMaterial.value = materialStore.getById(materialId);
-  formState.name = activeMaterial.value.name;
-  formState.caloriesPerHundredGram =
-    activeMaterial.value.caloriesPerHundredGram;
-  isOpen.value = true;
+  const res = materialStore.getById(materialId);
+  if (res) {
+    activeMaterial.value = res;
+    formState.name = activeMaterial.value.name;
+    formState.caloriesPerHundredGram =
+      activeMaterial.value.caloriesPerHundredGram;
+    isOpen.value = true;
+  } else {
+    notier.error("找不到该材料");
+  }
 }
 
 function handleDelete() {
   isLoading.value = true;
-  db.materials
-    .update(activeMaterial.value.id, {
-      deleted: true,
-    })
-    .then(() => {
-      notier.success("删除成功");
-      isOpen.value = false;
-    })
-    .catch(() => notier.error("删除失败"))
-    .finally(() => (isLoading.value = false));
+  if (activeMaterial.value && activeMaterial.value.id) {
+    materialService
+      .deleteMaterial(activeMaterial.value.id)
+      .then(() => {
+        isOpen.value = false;
+      })
+      .finally(() => (isLoading.value = false));
+  }
 }
 
 function handleOk(values: FormState) {
   isLoading.value = true;
-  db.materials
-    .put({
-      id: activeMaterial.value.id,
-      name: values.name,
-      caloriesPerHundredGram: values.caloriesPerHundredGram,
-      imgUrl: DefaultImg,
-      default: false,
-      deleted: false,
-    })
-    .then(() => {
-      notier.success("修改成功");
-      isOpen.value = false;
-    })
-    .catch(() => notier.error("修改失败"))
-    .finally(() => (isLoading.value = false));
+  if (activeMaterial.value && activeMaterial.value.id) {
+    materialService
+      .update(activeMaterial.value.id, {
+        name: values.name,
+        caloriesPerHundredGram: values.caloriesPerHundredGram,
+      })
+      .then(() => {
+        isOpen.value = false;
+      })
+      .finally(() => (isLoading.value = false));
+  }
 }
 </script>
 

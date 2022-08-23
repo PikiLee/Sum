@@ -47,22 +47,17 @@
 import AppCard from "../elements/AppCard.vue";
 import SmallCard from "../elements/SmallCard.vue";
 import { ref } from "vue";
-import { db } from "../db/db";
 import DefaultImg from "../assets/imgs/default.jpg";
-import { useNoti } from "../plugins/useNoti";
 import { gsap } from "gsap";
+import type { Material } from "../db/materialType";
 
 import MaterialCard from "./MaterialCard.vue";
 import MaterialFormModal from "../elements/MaterialFormModal.vue";
+import materialService from "@/services/materialService";
 
-const notier = useNoti();
-
-defineProps({
-  materials: {
-    type: Array,
-    required: true,
-  },
-});
+defineProps<{
+  materials: Material[];
+}>();
 
 defineEmits(["click:item"]);
 
@@ -80,10 +75,10 @@ function openModal() {
   isOpen.value = true;
 }
 
-function handleOk(values) {
+function handleOk(values: { name: string; caloriesPerHundredGram: number }) {
   isLoading.value = true;
-  db.materials
-    .put({
+  materialService
+    .add({
       name: values.name,
       caloriesPerHundredGram: values.caloriesPerHundredGram,
       imgUrl: DefaultImg,
@@ -91,10 +86,8 @@ function handleOk(values) {
       deleted: false,
     })
     .then(() => {
-      notier.success("添加成功");
       isOpen.value = false;
     })
-    .catch(() => notier.error("添加失败"))
     .finally(() => (isLoading.value = false));
 }
 

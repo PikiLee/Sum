@@ -8,6 +8,32 @@ import materialService from "../services/materialService";
 import { useMaterialStore } from "@/stores/material";
 import { watch } from "vue";
 
+async function retrieveMaterialsToStore() {
+  const mealStore = useMealStore();
+  const materialStore = useMaterialStore();
+
+  watch(
+    mealStore.todayMeals,
+    () => {
+      mealService
+        .transformMeals(mealStore.todayMeals)
+        .then((transFormedTodayMeals) =>
+          mealStore.setTransFormedTodayMeals(transFormedTodayMeals)
+        );
+      mealService
+        .getRecentMeals(5)
+        .then((meals) => mealStore.setRecentMeals(meals));
+    },
+    { immediate: true, deep: true }
+  );
+
+  const allMaterials = await materialService.getAll();
+  materialStore.setAllMaterials(allMaterials);
+
+  const materials = await materialService.getNotDeleted();
+  materialStore.setMaterials(materials);
+}
+
 const progressBar = useProgressBar();
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +43,6 @@ const router = createRouter({
       name: "home",
       component: HomeView,
       beforeEnter: async () => {
-        const materialStore = useMaterialStore();
         const mealStore = useMealStore();
 
         /**
@@ -27,27 +52,7 @@ const router = createRouter({
         const meals = await mealService.getMeals(Date.now());
         mealStore.setTodayMeals(meals);
 
-        watch(
-          mealStore.todayMeals,
-          () => {
-            mealService
-              .transformMeals(mealStore.todayMeals)
-              .then((transFormedTodayMeals) =>
-                mealStore.setTransFormedTodayMeals(transFormedTodayMeals)
-              );
-            mealService
-              .getRecentMeals(5)
-              .then((meals) => mealStore.setRecentMeals(meals));
-          },
-          { immediate: true, deep: true }
-        );
-
-        const allMaterials = await materialService.getAll();
-        materialStore.setAllMaterials(allMaterials);
-
-        const materials = await materialService.getNotDeleted();
-        materialStore.setMaterials(materials);
-
+        await retrieveMaterialsToStore();
         return true;
       },
     },
@@ -55,6 +60,10 @@ const router = createRouter({
       path: "/materials",
       name: "materials",
       component: MaterialsView,
+      beforeEnter: async () => {
+        await retrieveMaterialsToStore();
+        return true;
+      },
     },
     {
       path: "/expenditure",

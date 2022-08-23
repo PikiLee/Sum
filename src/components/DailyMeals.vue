@@ -36,7 +36,7 @@
       :error="error"
       title="修改"
     >
-      <AmountForm v-model:amount="amount" :materialId="meal.materialId" />
+      <AmountForm v-model:amount="amount" :materialId="meal?.materialId ?? 1" />
       <template v-slot:footer>
         <BaseButton @click="handleCancel">取消</BaseButton>
         <BaseButton @click="deleteMeal">删除</BaseButton>
@@ -52,13 +52,12 @@ import AppCard from "../elements/AppCard.vue";
 import { ref } from "vue";
 import { useMealStore } from "../stores/meal";
 import AmountForm from "../elements/AmountForm.vue";
-import { db } from "../db/db";
 import { useNoti } from "../plugins/useNoti";
 import AppProgress from "../elements/AppProgress.vue";
 import { useTDEEStore } from "../stores/TDEE";
 import BaseButton from "../elements/BaseButton.vue";
 import CaloriesStatsCard from "./CaloriesStatsCard.vue";
-import { Category, type Meal } from "@/db/mealTypes";
+import type { Meal } from "@/db/mealTypes";
 import mealService from "@/services/mealService";
 
 const notier = useNoti();

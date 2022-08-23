@@ -10,5 +10,4 @@ import SearchBar from "../components/SearchBar.vue";
   <DailyMealsVue />
   <RecentAddedBoard />
   <MaterialBoardVue />
-  <div></div>
 </template>
