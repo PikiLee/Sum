@@ -12,6 +12,13 @@ async function retrieveMaterialsToStore() {
   const mealStore = useMealStore();
   const materialStore = useMaterialStore();
 
+  const transFormedTodayMeals = await mealService.transformMeals(
+    mealStore.todayMeals
+  );
+  mealStore.setTransFormedTodayMeals(transFormedTodayMeals);
+  const meals = await mealService.getRecentMeals(5);
+  mealStore.setRecentMeals(meals);
+
   watch(
     mealStore.todayMeals,
     () => {
@@ -24,7 +31,7 @@ async function retrieveMaterialsToStore() {
         .getRecentMeals(5)
         .then((meals) => mealStore.setRecentMeals(meals));
     },
-    { immediate: true, deep: true }
+    { deep: true }
   );
 
   const allMaterials = await materialService.getAll();

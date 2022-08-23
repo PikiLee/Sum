@@ -6,6 +6,7 @@
       loop
       @swiper="onSwiper"
       @slideChange="onSlideChange"
+      autoHeight
     >
       <slot />
       <template v-slot:container-start>
