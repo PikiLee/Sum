@@ -12,22 +12,21 @@
     </MealsTab>
 
     <!-- Progress -->
-    <!-- <h1 class="text-lg text-center font-bold">今日统计</h1>
+    <h1 class="text-lg text-center font-bold">今日统计</h1>
     <AppCard>
       <CaloriesStatsCard
-        :caloriesByPeriod="mealStore.todayCaloriesByPeriod"
-        :totalCalories="mealStore.totalCalories"
+        :transFormedTodayMeals="mealStore.transFormedTodayMeals"
       />
       <h2 class="text-center text-lg font-md my-2">
         目标：<span class="text-green-400 font-bold">{{ TDEEStore.TDEE }}</span>
         千卡 剩余
         <span class="text-orange-400 font-bold">{{
-          TDEEStore.TDEE - mealStore.totalCalories
+          TDEEStore.TDEE - mealStore.transFormedTodayMeals.caloriesByDay
         }}</span
         >千卡
       </h2>
       <AppProgress :progress="mealStore.caloriesProgress" />
-    </AppCard> -->
+    </AppCard>
 
     <!-- Modal -->
     <AppModal

@@ -2,25 +2,23 @@
   <div class="grid grid-cols-2 justify-items-center gap-2">
     <span
       class="col-span-1"
-      v-for="(calories, period) in caloriesByPeriod"
+      v-for="(mealsByPeriod, period) in transFormedTodayMeals.mealsByPeriod"
       :key="period"
-      >{{ period }}：{{ calories }}千卡</span
+      >{{ Category[period] }}：{{ mealsByPeriod.caloriesByPeriod }}千卡</span
     >
   </div>
-  <h2 class="text-center mt-2">总共： {{ totalCalories }}千卡</h2>
+  <h2 class="text-center mt-2">
+    总共： {{ transFormedTodayMeals.caloriesByDay }}千卡
+  </h2>
 </template>
 
-<script setup>
-defineProps({
-  caloriesByPeriod: {
-    type: Object,
-    required: true,
-  },
-  totalCalories: {
-    type: Number,
-    required: true,
-  },
-});
+<script setup lang="ts">
+import type { MealsByDay } from "../db/mealTypes";
+import { Category } from "../db/mealTypes";
+
+defineProps<{
+  transFormedTodayMeals: MealsByDay;
+}>();
 </script>
 
 <style lang="scss" scoped></style>

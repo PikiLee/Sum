@@ -68,15 +68,15 @@ export const useMealStore = defineStore({
     //     return todayCaloriesByPeriod;
     //   }
     // },
-    // caloriesProgress: (state) => {
-    //   const TDEEStore = useTDEEStore();
-    //   if (state.todayMeals && TDEEStore.TDEE) {
-    //     const calories = state.totalCalories;
-    //     return Number((1 - calories / TDEEStore.TDEE).toFixed(2));
-    //   } else {
-    //     return 1;
-    //   }
-    // },
+    caloriesProgress: (state) => {
+      const TDEEStore = useTDEEStore();
+      if (state.todayMeals && TDEEStore.TDEE) {
+        const calories = state.transFormedTodayMeals.caloriesByDay;
+        return Number((1 - calories / TDEEStore.TDEE).toFixed(2));
+      } else {
+        return 1;
+      }
+    },
   },
   actions: {
     setCurrentCategory(category: Category) {
