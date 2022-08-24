@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-max">
     <slot name="title" />
     <AppTabVue
       :tabTitles="cates"

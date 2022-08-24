@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3">
+  <div class="mb-3 h-max">
     <swiper
       :slides-per-view="1"
       :space-between="50"
@@ -26,10 +26,13 @@
 import { Swiper } from "swiper/vue";
 import type { Swiper as SwiperType } from "swiper/types";
 import BaseTab from "./BaseTab.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useMealStore } from "@/stores/meal";
 
 // Import Swiper styles
 import "swiper/css";
+
+const mealStore = useMealStore();
 
 defineProps<{
   tabTitles: string[];
@@ -53,6 +56,12 @@ const handelToggle = (index: number) => {
     activeIndex.value = index;
   }
 };
+
+watch(mealStore.todayMeals, () => {
+  setTimeout(() => {
+    swiperIns?.updateAutoHeight(100);
+  }, 100);
+});
 </script>
 
 <style lang="scss" scoped></style>

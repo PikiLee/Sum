@@ -18,7 +18,7 @@ const app = createApp({
      */
 
     const materialDbVersion = Number(localStorage.getItem("materialDbVersion"));
-    const currentVersion = 1;
+    const currentVersion = 1.1;
     if (!materialDbVersion || materialDbVersion < currentVersion) {
       db.materials
         .bulkPut(materialData)
