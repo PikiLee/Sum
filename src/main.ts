@@ -32,7 +32,12 @@ const app = createApp({
      */
     const TDEEStore = useTDEEStore();
 
-    const TDEE = Number(localStorage.getItem("TDEE"));
+    const res = localStorage.getItem("TDEE");
+    let TDEE = 2500;
+    if (res) {
+      TDEE = Number(res);
+    }
+
     TDEEStore.setTDEE(TDEE);
 
     return h(App);

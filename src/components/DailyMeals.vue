@@ -76,7 +76,7 @@ const TDEEStore = useTDEEStore();
 
 const TDEESetted = ref<boolean>(false);
 
-if (localStorage.getItem("TDEESetted")) {
+if (localStorage.getItem("TDEE")) {
   TDEESetted.value = true;
 }
 
