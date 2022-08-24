@@ -15,39 +15,13 @@
             class="grid grid-cols-2 gap-3"
             v-if="mealsByPeriod.meals.length >= 1"
           >
-            <SmallCardVue
+            <MealCard
               v-for="meal in mealsByPeriod.meals"
               :key="meal.id"
               class="col-span-1"
+              :meal="meal"
               @click="$emit('click:item', meal.id)"
-            >
-              <div class="grid grid-cols-3 gap-2 h-full">
-                <AppAvatar
-                  :imgSrc="meal.material.imgUrl"
-                  size="small"
-                  class="row-start-1 row-span-2 col-span-1 self-center justify-self-center"
-                />
-                <h2 class="row-start-3 col-span-1 text-center text-sm">
-                  {{ meal.material.name }}
-                </h2>
-                <h2 class="col-span-2 text-center text-md">
-                  {{ meal.amount }}克
-                </h2>
-                <h2
-                  class="col-span-2 text-center text-xs flex items-center justify-center"
-                >
-                  {{ meal.material.caloriesPerHundredGram }}千卡每100克
-                </h2>
-                <h2 class="col-span-2 text-center">
-                  <span
-                    class="text-xl font-bold text-orange-400 align-baseline"
-                  >
-                    {{ meal.calories }}
-                  </span>
-                  <span class="align-baseline"> 千卡 </span>
-                </h2>
-              </div>
-            </SmallCardVue>
+            />
           </div>
           <img
             v-else

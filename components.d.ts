@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ABadge: typeof import('ant-design-vue/es')['Badge']
     AddMealModal: typeof import('./src/components/AddMealModal.vue')['default']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
@@ -33,6 +34,7 @@ declare module '@vue/runtime-core' {
     MaterialBoard: typeof import('./src/components/MaterialBoard.vue')['default']
     MaterialCard: typeof import('./src/components/MaterialCard.vue')['default']
     MaterialList: typeof import('./src/components/MaterialList.vue')['default']
+    MealCard: typeof import('./src/components/MealCard.vue')['default']
     MealsTab: typeof import('./src/components/MealsTab.vue')['default']
     RecentAddedBoard: typeof import('./src/components/RecentAddedBoard.vue')['default']
     RecentMeals: typeof import('./src/components/RecentMeals.vue')['default']
