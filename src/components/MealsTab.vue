@@ -40,8 +40,6 @@
 <script setup lang="ts">
 import AppTabVue from "../elements/AppTab.vue";
 import AppCard from "../elements/AppCard.vue";
-import SmallCardVue from "../elements/SmallCard.vue";
-import AppAvatar from "../elements/AppAvatar.vue";
 import { ref } from "vue";
 import { cates } from "@/db/mealTypes";
 import type { MealsByPeriod } from "@/db/mealTypes";

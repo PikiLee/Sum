@@ -6,12 +6,13 @@ import { useMaterialStore } from "@/stores/material";
 const notier = useNoti();
 
 function getAll() {
-  return db.materials.toArray();
+  return db.materials.reverse().toArray();
 }
 
 function getNotDeleted() {
   return db.materials
     .filter((material) => material.deleted === false)
+    .reverse()
     .toArray();
 }
 

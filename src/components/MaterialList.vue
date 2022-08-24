@@ -13,7 +13,7 @@
             @click="openModal"
             key="add-btn"
           >
-            <span class="text-3xl pb-1">+ </span><span>添加材料</span>
+            <span class="text-3xl pb-1">+ </span><span>添加新材料</span>
           </SmallCard>
           <MaterialCard
             v-for="material in materials"

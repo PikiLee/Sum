@@ -25,7 +25,10 @@
               @click:item="openModal"
             />
           </div>
-          <p v-else class="text-white">没找到。</p>
+          <div v-else class="text-white">
+            <p>未找到该材料。</p>
+            <p>请自己添加。</p>
+          </div>
         </Transition>
       </div>
     </div>

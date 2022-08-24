@@ -28,8 +28,8 @@ export const useMaterialStore = defineStore({
       this.allMaterials = materials;
     },
     addMaterial(material: Material) {
-      this.materials.push(material);
-      this.allMaterials.push(material);
+      this.materials.unshift(material);
+      this.allMaterials.unshift (material);
     },
     deleteMaterial(id: number) {
       const index = this.materials.findIndex((material) => material.id === id);
