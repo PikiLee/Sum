@@ -17,18 +17,22 @@
       <CaloriesStatsCard
         :transFormedTodayMeals="mealStore.transFormedTodayMeals"
       />
-      <h2 class="text-center text-lg font-md my-2">
-        目标：<span class="text-green-400 font-bold">{{ TDEEStore.TDEE }}</span>
-        千卡 剩余
-        <span class="text-orange-400 font-bold">{{
+      <h2 class="text-center text-md font-md my-2">
+        每日需求：<span class="text-green-400 font-bold text-lg">{{
+          TDEEStore.TDEE
+        }}</span>
+        千卡 还可摄入
+        <span class="text-orange-400 font-bold text-lg">{{
           TDEEStore.TDEE - mealStore.transFormedTodayMeals.caloriesByDay
         }}</span
         >千卡
       </h2>
       <h3 class="text-center mb-2" v-if="!TDEESetted">
-        默认目标2500千卡，
+        默认2500千卡，
         <span class="text-green-500">
-          <RouterLink :to="{ name: 'expenditure' }">点击设置目标</RouterLink>
+          <RouterLink :to="{ name: 'expenditure' }"
+            >点击设置每日需求</RouterLink
+          >
         </span>
       </h3>
       <AppProgress :progress="mealStore.caloriesProgress" />

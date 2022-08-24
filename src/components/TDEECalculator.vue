@@ -1,6 +1,9 @@
 <template>
   <AppCard2 ref="card">
-    <h1 class="text-lg font-bold text-center">计算你的每日热量总需求</h1>
+    <h1 class="text-lg font-bold text-center mb-2">计算你的每日热量总需求</h1>
+    <h2 class="text-md text-center">
+      根据每日需求，合理地减少摄入卡路里（如500千卡每天）可以让你稳定地减重
+    </h2>
     <div class="flex justify-center gap-2 items-center my-4">
       <a-switch v-model:checked="inputDirectly" />
       <span>直接输入？</span>
