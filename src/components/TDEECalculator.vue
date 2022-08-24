@@ -216,7 +216,6 @@ function handleSubmit() {
     TDEEStore.setTDEE(TDEE);
     localStorage.setItem("TDEEInfo", JSON.stringify(toRaw(formState)));
     localStorage.setItem("TDEE", String(TDEE));
-    localStorage.setItem("TDEESetted", JSON.stringify(true));
     notier.success("设置成功");
     setTimeout(() => router.push({ name: "home" }), 500);
 

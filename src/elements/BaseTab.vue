@@ -3,7 +3,7 @@
     class="relative border rounded-md border-black flex bg-green-400 z-0 text-slate-900 gap-0"
   >
     <button
-      class="w-full grow-0 h-full rounded-md transition-all duration-200 ease-in delay-300 text-lg"
+      class="w-full grow-0 h-full rounded-md transition-all duration-200 ease-in text-lg"
       :class="{ 'btn-active': activeIndex === index }"
       v-for="(tabTitle, index) in tabTitles"
       :key="tabTitle"

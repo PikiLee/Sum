@@ -26,7 +26,7 @@
 import { Swiper } from "swiper/vue";
 import type { Swiper as SwiperType } from "swiper/types";
 import BaseTab from "./BaseTab.vue";
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useMealStore } from "@/stores/meal";
 
 // Import Swiper styles
@@ -36,31 +36,33 @@ const mealStore = useMealStore();
 
 defineProps<{
   tabTitles: string[];
+  activeIndex: number;
 }>();
 
-const activeIndex = ref(0);
+const emit = defineEmits(["toggle"]);
+
 let swiperIns: SwiperType | null = null;
 const onSwiper = (swiper: SwiperType) => {
   swiperIns = swiper;
-  activeIndex.value = swiper.realIndex;
+  emit("toggle", swiper.realIndex);
 };
 const onSlideChange = () => {
   if (swiperIns) {
-    activeIndex.value = swiperIns.realIndex;
+    emit("toggle", swiperIns.realIndex);
   }
 };
 
 const handelToggle = (index: number) => {
   if (swiperIns) {
-    swiperIns?.slideTo(index);
-    activeIndex.value = index;
+    swiperIns.slideToLoop(index);
+    emit("toggle", swiperIns.realIndex);
   }
 };
 
 watch(mealStore.todayMeals, () => {
   setTimeout(() => {
     swiperIns?.updateAutoHeight(100);
-  }, 100);
+  }, 300);
 });
 </script>
 
