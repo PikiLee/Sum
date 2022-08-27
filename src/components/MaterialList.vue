@@ -8,13 +8,10 @@
     <AppCard class="mx-3">
       <div class="w-full grid grid-cols-2 gap-3">
         <TransitionGroup name="list" @leave="onLeave" @enter="onEnter">
-          <SmallCard
-            class="col-span-1 text-xl text-center cursor-pointer flex items-center justify-center gap-1"
-            @click="openModal"
+          <AddMaterialCard
             key="add-btn"
-          >
-            <span class="text-3xl pb-1">+ </span><span>添加新材料</span>
-          </SmallCard>
+            class="col-span-1"
+          />
           <MaterialCard
             v-for="material in materials"
             :key="material.id"
@@ -32,14 +29,6 @@
         >
       </p>
     </AppCard>
-
-    <!-- Modal -->
-    <MaterialFormModal
-      :isOpen="isOpen"
-      @cancel="handleCancel"
-      @ok="handleOk"
-      :isLoading="isLoading"
-    />
   </div>
 </template>
 

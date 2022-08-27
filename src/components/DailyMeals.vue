@@ -80,8 +80,6 @@ if (localStorage.getItem("TDEE")) {
   TDEESetted.value = true;
 }
 
-//
-
 /**
  * Modal
  */
