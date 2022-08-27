@@ -3,11 +3,11 @@
   <AppModal :isOpen="isOpen" :error="error" :title="title">
     <a-form ref="formRef" :model="formState" :rules="rules">
       <a-form-item label="名称" name="name">
-        <a-input v-model:value="formState.name" />
+        <a-input v-model.trim:value="formState.name" />
       </a-form-item>
       <a-form-item label="卡路里（每一百克）" name="caloriesPerHundredGram">
         <a-input-number
-          v-model:value="formState.caloriesPerHundredGram"
+          v-model.trim:value="formState.caloriesPerHundredGram"
           :min="1"
         />
       </a-form-item>
