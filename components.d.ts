@@ -36,6 +36,7 @@ declare module '@vue/runtime-core' {
     MaterialList: typeof import('./src/components/MaterialList.vue')['default']
     MealCard: typeof import('./src/components/MealCard.vue')['default']
     MealsTab: typeof import('./src/components/MealsTab.vue')['default']
+    ProgressGraph: typeof import('./src/components/ProgressGraph.vue')['default']
     RecentAddedBoard: typeof import('./src/components/RecentAddedBoard.vue')['default']
     RecentMeals: typeof import('./src/components/RecentMeals.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
