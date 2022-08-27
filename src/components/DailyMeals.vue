@@ -12,31 +12,11 @@
     </MealsTab>
 
     <!-- Progress -->
-    <h1 class="text-lg text-center font-bold">今日统计</h1>
-    <AppCard>
-      <CaloriesStatsCard
-        :transFormedTodayMeals="mealStore.transFormedTodayMeals"
-      />
-      <h2 class="text-center text-md font-md my-2">
-        每日需求：<span class="text-green-400 font-bold text-lg">{{
-          TDEEStore.TDEE
-        }}</span>
-        千卡 还可摄入
-        <span class="text-orange-400 font-bold text-lg">{{
-          TDEEStore.TDEE - mealStore.transFormedTodayMeals.caloriesByDay
-        }}</span
-        >千卡
-      </h2>
-      <h3 class="text-center mb-2" v-if="!TDEESetted">
-        默认2500千卡，
-        <span class="text-green-500">
-          <RouterLink :to="{ name: 'expenditure' }"
-            >点击设置每日需求</RouterLink
-          >
-        </span>
-      </h3>
-      <AppProgress :progress="mealStore.caloriesProgress" />
-    </AppCard>
+    <ProgressGraph
+      :labels="labels"
+      :amounts="amounts"
+      :target="TDEEStore.TDEE"
+    />
 
     <!-- Modal -->
     <AppModal
@@ -58,16 +38,14 @@
 
 <script setup lang="ts">
 import MealsTab from "./MealsTab.vue";
-import AppCard from "../elements/AppCard.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useMealStore } from "../stores/meal";
 import AmountForm from "../elements/AmountForm.vue";
 import { useNoti } from "../plugins/useNoti";
-import AppProgress from "../elements/AppProgress.vue";
 import { useTDEEStore } from "../stores/TDEE";
 import BaseButton from "../elements/BaseButton.vue";
-import CaloriesStatsCard from "./CaloriesStatsCard.vue";
 import type { Meal } from "@/db/mealTypes";
+import { cates } from "@/db/mealTypes";
 import mealService from "@/services/mealService";
 
 const notier = useNoti();
@@ -80,7 +58,25 @@ if (localStorage.getItem("TDEE")) {
   TDEESetted.value = true;
 }
 
-//
+/**
+ * Today's statistics
+ */
+
+const labels = computed(() => {
+  const labels: string[] = [];
+  mealStore.transFormedTodayMeals.mealsByPeriod.forEach((mealsByPeriod) => {
+    labels.push(cates[mealsByPeriod.category]);
+  });
+  return labels;
+});
+
+const amounts = computed(() => {
+  const amounts: number[] = [];
+  mealStore.transFormedTodayMeals.mealsByPeriod.forEach((mealsByPeriod) => {
+    amounts.push(mealsByPeriod.caloriesByPeriod);
+  });
+  return amounts;
+});
 
 /**
  * Modal
