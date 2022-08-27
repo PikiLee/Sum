@@ -65,10 +65,20 @@ import {
   faGear,
   faXmark,
   faChartSimple,
+  faPlus,
+  faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faHouse, faLayerGroup, faGear, faXmark, faChartSimple);
+library.add(
+  faHouse,
+  faLayerGroup,
+  faGear,
+  faXmark,
+  faChartSimple,
+  faPlus,
+  faMinus
+);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 
