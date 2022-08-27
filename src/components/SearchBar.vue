@@ -26,8 +26,8 @@
             />
           </div>
           <div v-else class="text-white">
-            <p>未找到该材料。</p>
-            <p>请自己添加。</p>
+            <p class="mb-2">未找到该材料。</p>
+            <AddMaterialCard />
           </div>
         </Transition>
       </div>
@@ -53,6 +53,7 @@ import { useMaterialStore } from "../stores/material";
 import MaterialCard from "./MaterialCard.vue";
 import { gsap } from "gsap";
 import type { Material } from "@/db/materialType";
+import AddMaterialCard from "./AddMaterialCard.vue";
 
 const materialStore = useMaterialStore();
 const searchInput = ref("");

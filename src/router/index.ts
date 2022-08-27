@@ -7,17 +7,27 @@ import mealService from "../services/mealService";
 import materialService from "../services/materialService";
 import { useMaterialStore } from "@/stores/material";
 import { watch } from "vue";
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import { isEmpty } from "lodash-es";
+
+dayjs.extend(isToday);
 
 async function retrieveMaterialsToStore() {
-  const mealStore = useMealStore();
   const materialStore = useMaterialStore();
+  const mealStore = useMealStore();
 
-  const transFormedTodayMeals = await mealService.transformMeals(
-    mealStore.todayMeals
-  );
-  mealStore.setTransFormedTodayMeals(transFormedTodayMeals);
-  const meals = await mealService.getRecentMeals(5);
-  mealStore.setRecentMeals(meals);
+  if (isEmpty(mealStore.transFormedTodayMeals)) {
+    const transFormedTodayMeals = await mealService.transformMeals(
+      mealStore.todayMeals
+    );
+    mealStore.setTransFormedTodayMeals(transFormedTodayMeals);
+  }
+
+  if (mealStore.recentMeals.length === 0) {
+    const meals = await mealService.getRecentMeals(5);
+    mealStore.setRecentMeals(meals);
+  }
 
   watch(
     mealStore.todayMeals,
@@ -34,11 +44,15 @@ async function retrieveMaterialsToStore() {
     { deep: true }
   );
 
-  const allMaterials = await materialService.getAll();
-  materialStore.setAllMaterials(allMaterials);
+  if (materialStore.allMaterials.length === 0) {
+    const allMaterials = await materialService.getAll();
+    materialStore.setAllMaterials(allMaterials);
+  }
 
-  const materials = await materialService.getNotDeleted();
-  materialStore.setMaterials(materials);
+  if (materialStore.materials.length === 0) {
+    const materials = await materialService.getNotDeleted();
+    materialStore.setMaterials(materials);
+  }
 }
 
 const progressBar = useProgressBar();
@@ -56,10 +70,15 @@ const router = createRouter({
          * Set up stores
          */
 
-        const meals = await mealService.getMeals(Date.now());
-        const con = "caloriesByDay" in meals;
-        if (!con) {
-          mealStore.setTodayMeals(meals);
+        if (
+          mealStore.todayMeals.length === 0 ||
+          !dayjs(mealStore.todayMeals[0].date).isToday()
+        ) {
+          const meals = await mealService.getMeals(Date.now());
+          const con = "caloriesByDay" in meals;
+          if (!con) {
+            mealStore.setTodayMeals(meals);
+          }
         }
 
         await retrieveMaterialsToStore();
