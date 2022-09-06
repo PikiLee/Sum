@@ -1,5 +1,21 @@
 <template>
-  <div ref="containerEl"></div>
+  <div class="">
+    <h1 class="text-lg text-center font-bold mt-6">今日统计</h1>
+    <div ref="containerEl"></div>
+    <div class="flex justify-around pt-1">
+      <div
+        class="flex flex-col gap-2 items-center"
+        v-for="(label, index) in [...labels, '剩余']"
+        :key="label"
+      >
+        <div
+          class="w-3 aspect-square border border-slate-600 rounded-sm"
+          :style="{ backgroundColor: colorStringWrap(index) }"
+        ></div>
+        <p class="leading-none">{{ label }}</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,8 +26,7 @@ import {
   LINE_CAP,
   TextStyle,
   Text,
-  settings,
-  SCALE_MODES,
+  ObservablePoint,
 } from "pixi.js";
 import { onMounted, ref, computed, watch } from "vue";
 import { gsap } from "gsap";
@@ -49,6 +64,11 @@ const progresses = computed(() => {
 
 const gap = 0.05;
 const noramlizeProgresses = computed(() => normalize(gap, progresses.value));
+
+const colors = [0xdcfce7, 0xd9f99d, 0x4ade80, 0x84cc16, 0x94a3b8];
+const colorWrap = gsap.utils.wrap(colors);
+const colorStrings = ["#dcfce7", "#d9f99d", "#4ade80", "#84cc16", "#94a3b8"];
+const colorStringWrap = gsap.utils.wrap(colorStrings);
 
 /**
  * Utility Functions
@@ -110,8 +130,7 @@ function drawArcText(
     fill: textColor,
   });
   const textPic = new Text(text, textStyle);
-  textPic.pivot.x = textPic.width * 0.5;
-  textPic.pivot.y = textPic.height * 0.5;
+  makeCenterToBePivot(textPic);
   textPic.x = textX;
   textPic.y = textY;
   textPic.rotation = calcDegreeOfTangentOfArc(startArc, endArc);
@@ -175,6 +194,21 @@ function calcDegreeOfTangentOfArc(arc1: number, arc2: number) {
   return degree;
 }
 
+function makeCenterToBePivot(object: {
+  pivot: ObservablePoint;
+  width: number;
+  height: number;
+}) {
+  object.pivot.x = object.width * 0.5;
+  object.pivot.y = object.height * 0.5;
+}
+
+function clampArc(arc: number) {
+  if (arc < Math.PI) arc = Math.PI;
+  if (arc > Math.PI * 2) arc = Math.PI * 2;
+  return arc;
+}
+
 interface ReDrawOptions {
   newText?: string;
   newStartArc?: number;
@@ -187,7 +221,7 @@ onMounted(() => {
   if (containerEl.value) {
     // draw
     const width = containerEl.value.clientWidth;
-    const height = 400;
+    const height = 200;
     const radius = width * 0.4;
     const reDrawFns: ReDraw[] = [];
 
@@ -203,19 +237,18 @@ onMounted(() => {
 
     const arcsContainer = new Container();
     arcsContainer.x = width * 0.5;
-    arcsContainer.y = height * 0.5;
+    arcsContainer.y = height * 0.9;
 
     app.stage.addChild(arcsContainer);
 
     // draw arc
-    const colors = [0xdcfce7, 0xd9f99d, 0x4ade80, 0x84cc16, 0x94a3b8];
-    const colorWrap = gsap.utils.wrap(colors);
 
     noramlizeProgresses.value.forEach((progress, index) => {
-      const startArc =
+      const startArc = clampArc(
         Math.PI *
-        (1 + calcSum(noramlizeProgresses.value.slice(0, index)) + gap * index);
-      const endArc = Math.PI * progress + startArc;
+          (1 + calcSum(noramlizeProgresses.value.slice(0, index)) + gap * index)
+      );
+      const endArc = clampArc(Math.PI * progress + startArc);
 
       const reDrawFn = drawArcText(
         animatedQuantities.value[index].toFixed(0),
@@ -232,24 +265,80 @@ onMounted(() => {
     });
 
     // draw goal
-    
+    const textContainer = new Container();
+    textContainer.x = width * 0.5;
+    textContainer.y = height * 0.9;
+    app.stage.addChild(textContainer);
 
+    const labelStyle = new TextStyle({
+      fontSize: 15,
+      stroke: 0x94a3b8,
+      strokeThickness: 0.5,
+      fill: 0x94a3b8,
+    });
+    const goalLabel = new Text("目标", labelStyle);
+    makeCenterToBePivot(goalLabel);
+    goalLabel.y = -70;
+    textContainer.addChild(goalLabel);
+
+    const leftLabel = new Text("剩余", labelStyle);
+    makeCenterToBePivot(leftLabel);
+    textContainer.addChild(leftLabel);
+
+    const leftTextStyle = new TextStyle({
+      fontSize: 25,
+      stroke: 0x4ade80,
+      strokeThickness: 2,
+      fill: 0x4ade80,
+    });
+    const leftText = new Text(
+      animatedQuantities.value[animatedQuantities.value.length - 1].toFixed(0),
+      leftTextStyle
+    );
+    makeCenterToBePivot(leftText);
+    leftText.y = -30;
+    textContainer.addChild(leftText);
+
+    const goalStyle = new TextStyle({
+      fontSize: 20,
+      stroke: 0x334155,
+      strokeThickness: 1,
+      fill: 0x334155,
+    });
+    const goalText = new Text(props.goal, goalStyle);
+    makeCenterToBePivot(goalText);
+    goalText.y = -100;
+    textContainer.addChild(goalText);
 
     app.ticker.add(() => {
       noramlizeProgresses.value.forEach((progress, index) => {
+        // redraw arc
         const startArc =
-          Math.PI *
-          (1 +
-            calcSum(noramlizeProgresses.value.slice(0, index)) +
-            gap * index);
-        const endArc = Math.PI * progress + startArc;
+          progress < 0
+            ? Math.PI * 2
+            : clampArc(
+                Math.PI *
+                  (1 +
+                    calcSum(noramlizeProgresses.value.slice(0, index)) +
+                    gap * index)
+              );
+        const endArc =
+          progress < 0 ? Math.PI * 2 : clampArc(Math.PI * progress + startArc);
 
         reDrawFns[index]({
           newText: animatedQuantities.value[index].toFixed(0),
           newStartArc: startArc,
           newEndArc: endArc,
         });
-        // console.log("tick");
+
+        // redraw goal
+        leftText.text =
+          animatedQuantities.value[animatedQuantities.value.length - 1].toFixed(
+            0
+          );
+        makeCenterToBePivot(leftText);
+        goalText.text = props.goal;
+        makeCenterToBePivot(goalText);
       });
     });
   }

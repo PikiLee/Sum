@@ -13,16 +13,10 @@
 
     <!-- Progress -->
     <ProgressStats
-      :labels="cates"
+      :labels="labels"
       :quantities="amounts"
       :goal="TDEEStore.TDEE"
     />
-    <ProgressGraph
-      :labels="labels"
-      :amounts="amounts"
-      :target="TDEEStore.TDEE"
-    />
-
     <!-- Modal -->
     <AppModal
       :isOpen="isOpen"
