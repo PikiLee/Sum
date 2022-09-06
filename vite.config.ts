@@ -24,4 +24,15 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "pixi.js": ["pixi.js"],
+          gsap: ["gsap"],
+          dexie: ["dexie"],
+        },
+      },
+    },
+  },
 });
