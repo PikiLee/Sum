@@ -1,17 +1,8 @@
 <script setup lang="ts">
 import MaterialBoardVue from "../components/MaterialBoard.vue";
-import RecentAddedBoardVue from "../components/RecentAddedBoard.vue";
+import RecentAddedBoard from "../components/RecentAddedBoard.vue";
 import DailyMealsVue from "../components/DailyMeals.vue";
 import SearchBar from "../components/SearchBar.vue";
-// import { defineAsyncComponent } from "vue";
-
-// const MaterialBoardVue = defineAsyncComponent(
-//   () => import("../components/MaterialBoard.vue")
-// );
-
-// const RecentAddedBoard = defineAsyncComponent(
-//   () => import("../components/RecentAddedBoard.vue")
-// );
 </script>
 
 <template>
