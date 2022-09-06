@@ -26,7 +26,7 @@ import {
   LINE_CAP,
   TextStyle,
   Text,
-  ObservablePoint,
+  type ObservablePoint,
 } from "pixi.js";
 import { onMounted, ref, computed, watch } from "vue";
 import { gsap } from "gsap";
