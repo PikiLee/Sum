@@ -12,6 +12,11 @@
     </MealsTab>
 
     <!-- Progress -->
+    <ProgressStats
+      :labels="cates"
+      :quantities="amounts"
+      :goal="TDEEStore.TDEE"
+    />
     <ProgressGraph
       :labels="labels"
       :amounts="amounts"
@@ -47,6 +52,7 @@ import BaseButton from "../elements/BaseButton.vue";
 import type { Meal } from "@/db/mealTypes";
 import { cates } from "@/db/mealTypes";
 import mealService from "@/services/mealService";
+import ProgressStats from "./ProgressStats.vue";
 
 const notier = useNoti();
 const mealStore = useMealStore();
