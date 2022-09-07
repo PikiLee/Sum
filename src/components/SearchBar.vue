@@ -43,6 +43,7 @@
       v-model:isOpen="isOpen"
       :materialId="materialId"
       @ok="handleOk"
+      :amount="amount"
     />
   </div>
 </template>
@@ -54,6 +55,7 @@ import MaterialCard from "./MaterialCard.vue";
 import { gsap } from "gsap";
 import type { Material } from "@/db/materialType";
 import AddMaterialCard from "./AddMaterialCard.vue";
+import { useLastMealAmount } from "../utils/useLastMealAmount";
 
 const materialStore = useMaterialStore();
 const searchInput = ref("");
@@ -99,9 +101,11 @@ function clearInput() {
  */
 const materialId = ref(1);
 const isOpen = ref(false);
+const { amount, getAmount } = useLastMealAmount();
 
-function openModal(id: number) {
+async function openModal(id: number) {
   materialId.value = id;
+  await getAmount(id);
   isOpen.value = true;
 }
 

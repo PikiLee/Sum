@@ -164,6 +164,10 @@ export function getStatsFromMealsByDay(mealsByDay: MealsByDay) {
   };
 }
 
+async function getMostRecentMealByMaterial(materialId: number) {
+  return db.meals.where("materialId").equals(materialId).last();
+}
+
 export default {
   getMeals,
   getRecentMeals,
@@ -171,4 +175,5 @@ export default {
   add,
   update,
   deleteMeal,
+  getMostRecentMealByMaterial,
 };

@@ -8,7 +8,11 @@
     </MaterialList>
 
     <!-- Modal -->
-    <AddMealModal v-model:isOpen="isOpen" :materialId="materialId" />
+    <AddMealModal
+      v-model:isOpen="isOpen"
+      :materialId="materialId"
+      :amount="amount"
+    />
   </div>
 </template>
 
@@ -17,6 +21,7 @@ import MaterialList from "./MaterialList.vue";
 import AddMealModal from "./AddMealModal.vue";
 import { ref } from "vue";
 import { useMaterialStore } from "../stores/material";
+import { useLastMealAmount } from "../utils/useLastMealAmount";
 
 const materialStore = useMaterialStore();
 
@@ -25,9 +30,11 @@ const materialStore = useMaterialStore();
  */
 const isOpen = ref(false);
 const materialId = ref(1);
+const { amount, getAmount } = useLastMealAmount();
 
-function openModal(id: number) {
+async function openModal(id: number) {
   materialId.value = id;
+  await getAmount(id);
   isOpen.value = true;
 }
 </script>
