@@ -38,7 +38,7 @@ async function retrieveMaterialsToStore() {
           mealStore.setTransFormedTodayMeals(transFormedTodayMeals)
         );
       mealService
-        .getRecentMeals(5)
+        .getRecentMeals(10)
         .then((meals) => mealStore.setRecentMeals(meals));
     },
     { deep: true }
