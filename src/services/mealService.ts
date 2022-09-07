@@ -1,6 +1,7 @@
+import { useTDEEStore } from "./../stores/TDEE";
 import { useMealStore } from "@/stores/meal";
 import { db } from "../db/db";
-import { categories } from "../db/mealTypes";
+import { categories, cates } from "../db/mealTypes";
 import { useNoti } from "@/plugins/useNoti";
 import type { UpdatedMeal } from "../db/mealTypes";
 
@@ -145,6 +146,22 @@ function deleteMeal(id: number) {
       notier.success("删除成功");
     })
     .catch(() => notier.error("删除失败"));
+}
+
+export function getStatsFromMealsByDay(mealsByDay: MealsByDay) {
+  const quantities = mealsByDay.mealsByPeriod.map(
+    (mealsByPeriod) => mealsByPeriod.caloriesByPeriod
+  );
+  const labels = mealsByDay.mealsByPeriod.map(
+    (mealsByPeriod) => cates[mealsByPeriod.category]
+  );
+  const TDEEStore = useTDEEStore();
+  const goal = TDEEStore.TDEE;
+  return {
+    labels,
+    quantities,
+    goal,
+  };
 }
 
 export default {

@@ -107,7 +107,7 @@ const router = createRouter({
         const aDay = 1000 * 60 * 60 * 24;
 
         for (let i = 1; i < 4; i++) {
-          const mealsByDay = await mealService.getMeals(Date.now() - aDay, {
+          const mealsByDay = await mealService.getMeals(Date.now() - aDay * i, {
             transform: true,
           });
           const mealStore = useMealStore();

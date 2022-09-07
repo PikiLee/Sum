@@ -11,9 +11,7 @@
         </h2>
       </template>
       <template v-slot:footer>
-        <AppCard>
-          <CaloriesStatsCard :transFormedTodayMeals="mealsByDay" />
-        </AppCard>
+        <ProgressStats v-bind="getStatsFromMealsByDay(mealsByDay)" />
       </template>
     </MealsTab>
   </div>
@@ -21,9 +19,9 @@
 
 <script setup lang="ts">
 import MealsTab from "./MealsTab.vue";
-import CaloriesStatsCard from "./CaloriesStatsCard.vue";
+import ProgressStats from "./ProgressStats.vue";
 import { useMealStore } from "@/stores/meal";
-import AppCard from "../elements/AppCard.vue";
+import { getStatsFromMealsByDay } from "../services/mealService";
 
 const mealStore = useMealStore();
 </script>
