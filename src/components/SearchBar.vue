@@ -27,7 +27,7 @@
           </div>
           <div v-else class="text-white">
             <p class="mb-2">未找到该材料。</p>
-            <AddMaterialCard />
+            <AddMaterialCard @ok="handleAddMaterialSuccess" />
           </div>
         </Transition>
       </div>
@@ -112,6 +112,11 @@ async function openModal(id: number) {
 function handleOk() {
   clearInput();
   inputEl.value?.focus();
+}
+
+function handleAddMaterialSuccess(name: string) {
+  searchInput.value = name;
+  openList();
 }
 
 /**

@@ -23,6 +23,8 @@ import materialService from "@/services/materialService";
 import DefaultImg from "../assets/imgs/default.jpg";
 import MaterialFormModal from "../elements/MaterialFormModal.vue";
 
+const emit = defineEmits(["ok"]);
+
 /**
  * Modal
  */
@@ -49,6 +51,7 @@ function handleOk(values: { name: string; caloriesPerHundredGram: number }) {
     })
     .then(() => {
       isOpen.value = false;
+      emit("ok", values.name);
     })
     .finally(() => (isLoading.value = false));
 }
