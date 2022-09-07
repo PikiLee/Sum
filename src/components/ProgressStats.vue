@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="pointer-events-none select-none">
     <h1 class="text-lg text-center font-bold mt-6">今日统计</h1>
     <div ref="containerEl"></div>
     <div class="flex justify-around pt-1">
